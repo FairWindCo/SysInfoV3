@@ -1,4 +1,4 @@
-from fw_utils.mounting import execute_os_command
+from fw_utils.utils import execute_os_command
 
 
 def init_key(keytab_file: str = "/etc/krb5.keytab", user_realm: str = None, in_sudo: bool = True):
