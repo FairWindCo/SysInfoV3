@@ -7,14 +7,17 @@ def create_path(path_for_create: str):
     path_element = ''
     while True:
         current_path_element, path_for_create = os.path.split(path_for_create)
-        path_element = os.path.join(path_element, current_path_element)
+        if not current_path_element:
+            path_element = os.path.join(path_element, path_for_create)
+        else:
+            path_element = os.path.join(path_element, current_path_element)
         if not os.path.exists(path_element):
             try:
                 os.mkdir(path_element)
             except Exception as io:
                 logging.error(f"ERROR path create {path_element}: {io}")
                 return False
-        if not path_for_create:
+        if not current_path_element:
             break
     return True
 
@@ -61,7 +64,12 @@ class MountControl:
             return create_path(self.mount_point)
 
     def mount(self):
-        execute_os_command('mount', '-t', 'cifs', '-o', 'sec=krb5', self.mount_device, self.mount_point, in_sudo=True)
+        if self.check_mount_point_exists(self.mount_point):
+            execute_os_command('mount', '-t', 'cifs', '-o', 'sec=krb5',
+                               self.mount_device, self.mount_point,
+                               in_sudo=True)
+        else:
+            logging.error(f"NO MOUNT POINT:{self.mount_point}")
 
     def unmount(self):
         execute_os_command('umount', self.mount_point, in_sudo=True)
