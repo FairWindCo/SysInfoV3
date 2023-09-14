@@ -32,7 +32,8 @@ class MountControl:
     def check_mount(self):
         result, _, mounts, _ = execute_os_command('mount')
         if result:
-            print(mounts, type(mounts))
+            list_mounts = mounts.split(b'\n')
+            print(list_mounts)
         else:
             logging.error("ERROR EXECUTE MOUNT")
 
