@@ -33,11 +33,12 @@ class MountControl:
         result, _, mounts, _ = execute_os_command('mount')
         if result:
             for mount_line in mounts.split(b'\n'):
-                mount_elements = mount_line.split(b' ')[:2]
-                print(mount_elements)
-                device, mount_point = mount_elements
-                if device.decode() == self.mount_device and mount_point.decode() == self.mount_point:
-                    return True
+                if mount_line:
+                    mount_elements = mount_line.split(b' ')[:3]
+                    print(mount_elements)
+                    device, _, mount_point = mount_elements
+                    if device.decode() == self.mount_device and mount_point.decode() == self.mount_point:
+                        return True
             return False
         else:
             logging.error("ERROR EXECUTE MOUNT")
