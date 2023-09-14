@@ -48,3 +48,24 @@ class MountControl:
 
     def unmount(self):
         execute_os_command('umount', self.mount_point, in_sudo=True)
+
+
+def mount_protocol(config: dict, execute_procedure):
+    destination_dirs = config.get('destination_dirs', [])
+    mounter_controls = []
+    if 'mount_points' in config:
+        for device, mount_point in config['mount_points'].items():
+            mounter = MountControl(device, mount_point, config.get('kerberos_key_file', None))
+            if not mounter.check_mount():
+                if mounter.mount():
+                    if mounter.check_mount():
+                        destination_dirs.append(mounter.mount_point)
+                        mounter_controls.append(mounter)
+                else:
+                    logging.error("MOUNT ERROR")
+            else:
+                destination_dirs.append(mounter.mount_point)
+    config['destination_dirs'] = destination_dirs
+    execute_procedure(config)
+    for mounter in mounter_controls:
+        mounter.unmount()
