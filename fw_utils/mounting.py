@@ -2,6 +2,8 @@ import logging
 import os.path
 from subprocess import Popen, PIPE, TimeoutExpired, SubprocessError
 
+from kerberos.linux_kerberos import init_key
+
 
 def create_path(path_for_create: str):
     path_element = ''
@@ -41,7 +43,9 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
     try:
         subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         subp.communicate(timeout=timeout)
-        return subp.returncode == 0, subp.returncode, subp.stdout, subp.stderr
+        if subp.returncode == 0:
+            logging.warning(f"RETURN CODE NON ZERO: {subp.returncode} {subp.stderr.readlines()}")
+        return subp.returncode == 0, subp.returncode, subp.stdout.readlines(), subp.stderr.readlines()
     except TimeoutExpired:
         logging.warning("Timeout")
     except SubprocessError as e:
@@ -52,10 +56,11 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
 
 
 class MountControl:
-    def __init__(self, device_for_mount: str, mount_point: str) -> None:
+    def __init__(self, device_for_mount: str, mount_point: str, kerberos_keytab: str = None) -> None:
         super().__init__()
         self.mount_device = device_for_mount
         self.mount_point = mount_point
+        self.kerberos_keytab = kerberos_keytab
 
     def check_mount_point_exists(self, try_create: bool = True):
         if os.path.exists(self.mount_point):
@@ -65,6 +70,9 @@ class MountControl:
 
     def mount(self):
         if self.check_mount_point_exists(self.mount_point):
+            if self.kerberos_keytab:
+                if not init_key(self.kerberos_keytab):
+                    logging.warning(f"init key error")
             execute_os_command('mount', '-t', 'cifs', '-o', 'sec=krb5',
                                self.mount_device, self.mount_point,
                                in_sudo=True)
