@@ -1,3 +1,5 @@
+import logging
+
 from fw_utils.mounting import MountControl
 
 if __name__ == "__main__":
@@ -10,6 +12,7 @@ if __name__ == "__main__":
         },
         'destination_dirs': ['/mnt/bkp0201', '/mnt/bkp0101']
     }
+    logging.getLogger().setLevel(logging.DEBUG)
     mounter_controls = []
     if 'mount_points' in backup_config:
         for device, mount_point in backup_config['mount_points'].items():

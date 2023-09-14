@@ -41,7 +41,7 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
     try:
         subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE)
         output_stream, err_stream = subp.communicate(timeout=timeout)
-        if subp.returncode == 0:
+        if subp.returncode != 0:
             logging.warning(f"RETURN CODE NON ZERO: {subp.returncode} {err_stream}")
         return subp.returncode == 0, subp.returncode, output_stream, err_stream
     except TimeoutExpired:
