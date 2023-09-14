@@ -17,6 +17,7 @@ if __name__ == "__main__":
     if 'mount_points' in backup_config:
         for device, mount_point in backup_config['mount_points'].items():
             mounter = MountControl(device, mount_point, backup_config.get('kerberos_key_file', None))
+            mounter.check_mount()
             mounter.mount()
             mounter_controls.append(mounter)
 

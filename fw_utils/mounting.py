@@ -29,5 +29,12 @@ class MountControl:
         else:
             logging.error(f"NO MOUNT POINT:{self.mount_point}")
 
+    def check_mount(self):
+        result, _, mounts, _ = execute_os_command('mount')
+        if result:
+            print(mounts, type(mounts))
+        else:
+            logging.error("ERROR EXECUTE MOUNT")
+
     def unmount(self):
         execute_os_command('umount', self.mount_point, in_sudo=True)
