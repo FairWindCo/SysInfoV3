@@ -39,10 +39,10 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
     logging.debug(f'COMMAND {" ".join(command_for_execute)} ')
     try:
         subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        subp.communicate(timeout=timeout)
+        output_stream, err_stream = subp.communicate(timeout=timeout)
         if subp.returncode == 0:
             logging.warning(f"RETURN CODE NON ZERO: {subp.returncode} {subp.stderr.readlines()}")
-        return subp.returncode == 0, subp.returncode, subp.stdout.readlines(), subp.stderr.readlines()
+        return subp.returncode == 0, subp.returncode, output_stream, err_stream
     except TimeoutExpired:
         logging.warning("Timeout")
     except SubprocessError as e:
