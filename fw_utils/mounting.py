@@ -71,7 +71,7 @@ class MountControl:
     def mount(self):
         if self.check_mount_point_exists(self.mount_point):
             if self.kerberos_keytab:
-                if not init_key(self.kerberos_keytab):
+                if not init_key(self.kerberos_keytab, in_sudo=True):
                     logging.warning(f"init key error")
             execute_os_command('mount', '-t', 'cifs', '-o', 'sec=krb5',
                                self.mount_device, self.mount_point,
