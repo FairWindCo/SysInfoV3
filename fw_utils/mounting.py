@@ -34,7 +34,7 @@ class MountControl:
         if result:
             for mount_line in mounts.split(b'\n'):
                 device, mount_point = mount_line.split(b' ')[:2]
-                if device.decode() == self.mount_device and mount_point.deocde() == self.mount_point:
+                if device.decode() == self.mount_device and mount_point.decode() == self.mount_point:
                     return True
             return False
         else:
