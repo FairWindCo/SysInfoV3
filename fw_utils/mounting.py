@@ -8,9 +8,7 @@ def create_path(path_for_create: str):
     while True:
         current_path_element, path_for_create = os.path.split(path_for_create)
         path_element = os.path.join(path_element, current_path_element)
-        if os.path.exists(path_element):
-            continue
-        else:
+        if not os.path.exists(path_element):
             try:
                 os.mkdir(path_element)
             except Exception as io:
@@ -50,7 +48,7 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
     return False, -1, None, None
 
 
-class MountControl:
+class moun:
     def __init__(self, device_for_mount: str, mount_point: str) -> None:
         super().__init__()
         self.mount_device = device_for_mount
