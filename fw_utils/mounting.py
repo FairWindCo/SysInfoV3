@@ -32,10 +32,14 @@ class MountControl:
     def check_mount(self):
         result, _, mounts, _ = execute_os_command('mount')
         if result:
-            list_mounts = [mount_line.encode().split(' ')  for mount_line in mounts.split(b'\n')]
-            print(list_mounts)
+            for mount_line in mounts.split(b'\n'):
+                device, mount_point = mount_line.split(b' ')[:2]
+                if device.decode() == self.mount_device and mount_point.deocde() == self.mount_point:
+                    return True
+            return False
         else:
             logging.error("ERROR EXECUTE MOUNT")
+            return False
 
     def unmount(self):
         execute_os_command('umount', self.mount_point, in_sudo=True)
