@@ -48,7 +48,7 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
     return False, -1, None, None
 
 
-class moun:
+class MountControl:
     def __init__(self, device_for_mount: str, mount_point: str) -> None:
         super().__init__()
         self.mount_device = device_for_mount
