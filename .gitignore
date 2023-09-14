@@ -1,0 +1,8 @@
+/output
+/venv
+/build
+/dist
+/.idea
+*.spec
+*.json
+/clear_profile.log

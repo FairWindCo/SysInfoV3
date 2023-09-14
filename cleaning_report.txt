@@ -1,0 +1,112 @@
+Total=155Gb Use=136Gb Free=18Gb Used=87.99%
+Clear inet cache dir: C:\Users\All Users\AppData\Local\Microsoft\Windows\INetCache
+Clear User Temp dir: C:\Users\All Users\AppData\Local\Temp
+Clear inet cache dir: C:\Users\Default\AppData\Local\Microsoft\Windows\INetCache
+Clear User Temp dir: C:\Users\Default\AppData\Local\Temp
+Clear inet cache dir: C:\Users\Default User\AppData\Local\Microsoft\Windows\INetCache
+Clear User Temp dir: C:\Users\Default User\AppData\Local\Temp
+Clear inet cache dir: C:\Users\Public\AppData\Local\Microsoft\Windows\INetCache
+Clear User Temp dir: C:\Users\Public\AppData\Local\Temp
+Clear inet cache dir: C:\Users\User\AppData\Local\Microsoft\Windows\INetCache
+Clear dir: C:\Users\User\AppData\Local\Microsoft\Windows\INetCache\Content.IE5
+Clear dir: C:\Users\User\AppData\Local\Microsoft\Windows\INetCache\Content.MSO
+Clear dir: C:\Users\User\AppData\Local\Microsoft\Windows\INetCache\Content.Word
+Clear dir: C:\Users\User\AppData\Local\Microsoft\Windows\INetCache\IE
+Clear dir: C:\Users\User\AppData\Local\Microsoft\Windows\INetCache\Low
+Clear dir: C:\Users\User\AppData\Local\Microsoft\Windows\INetCache\Virtualized
+Clear User Temp dir: C:\Users\User\AppData\Local\Temp
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\024786b8-aea6-4fab-8c62-21468266da75.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\0a340d49-e94b-4a96-9059-69e56f314f38.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\0e21f850-0cef-4828-a284-1d5754d58efa.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\0e77c146-8cc8-4dca-8815-b33faab39e91.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\1234f4e8-b783-49e9-b04f-62c21b0aa1ee.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\148df24e-9c34-4442-a9f8-01645700a948.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\25ba572a-24e4-4f94-8048-3f8fc390cd67.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\36efe991-4b3d-4bd6-9218-70540078c69c.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\421652fb-eb5b-497f-9edb-dc2ebf577ea0.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\42cddf77-c6d3-4716-a12a-34e60a0ad00e.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\52c3222b-ab5c-497f-8116-8dc9dd8a0cc7.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\5a0b4db3-7f9c-4148-88ad-1efdd260704c.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\73fcc1b9-04d2-48ba-8fd5-54c5564d9af2.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\78c142e9-fdf0-43ec-854b-b2ee2f760509.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\83a59c10-ac33-47b2-b07f-76b0af0a0208.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\8f0faeb9-2249-42c0-add7-70e650d2b168.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\9494ed1a-852b-43c0-8f53-1eadd5752256.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\96aa7fe4-0aaa-475a-a99a-e0536963a28c.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\99206e86-40ff-43bd-90d3-b6e4c3d40160.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\a6e42efb-8d3a-4679-99fa-3d993b739c3a.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\ac76b20b-22f9-4286-be39-7760ccf93b41.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\af792f57-3d4a-4368-852b-5a6dd383744f.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\b00c6af6-661a-4b9e-86e4-93fdc0a8d450.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\b8a284e9-affc-4c43-a988-bc85430b3cfa.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\ba67d69e-94ca-4ddf-bd24-6ae80f97a31c.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\bc3902d8132f43e3ae086a009979fa88.db'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\bc3902d8132f43e3ae086a009979fa88.db-shm'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\bc3902d8132f43e3ae086a009979fa88.db-wal'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\cf8dcc36-9d2f-4289-b155-0133ed2e2af4.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\d5b1202a-89fe-4344-9011-672e51b9251b.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\d6ceb2b9-9458-4dbf-88f0-98203cc59287.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\dee6e1c3-8c39-4f69-b0d0-f2b050b82765.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\e3cb1ebd-2bfb-41af-8a5f-23252ee2e096.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\e4f08757-95ea-420f-ac2d-d42f1266ff05.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\f262c72b-efcd-4533-a6b7-44d2e8cff90c.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\feaf970a-49a5-4a09-8a6a-18397ad76fc0.tmp'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\FXSAPIDebugLogFile.txt'
+ERROR: [WinError 5] Access is denied: 'C:\\Users\\User\\AppData\\Local\\Temp\\liblz4-java-16977678894785568754.so'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\mat-debug-10032.log'
+ERROR: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\User\\AppData\\Local\\Temp\\qtsingleapp-Viber-0-1-lockfile'
+Clear inet cache dir: C:\Users\Все пользователи\AppData\Local\Microsoft\Windows\INetCache
+Clear User Temp dir: C:\Users\Все пользователи\AppData\Local\Temp
+Clear System dir: C:\Windows\Temp
+Clear System dir: C:\Windows\SoftwareDistribution
+ERROR: C:\Windows\SoftwareDistribution\DataStore\DataStore.edb - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\DataStore.jfm - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edb.chk - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edb.log - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edb00262.log - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edb00263.log - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edb00264.log - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edbres00001.jrs - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edbres00002.jrs - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs\edbtmp.log - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore\Logs - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\DataStore - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\02fbd3861a0a12540c41a5dd9becb06d - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\1b922ecc4e415d55a9af8f6e69e94390ecc64025 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\1f4f25254da8dcc3a84e0a57cb2deb26 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\22848a650dd97bae8ad40c36de711f42 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\2e2016b18b7fac6b460a5100d058a2ec - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\4b1203c4fa775e8789be3d6a25d99d6cd4604483 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\5ef095713e715aece92a355130687260 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\741530eba4c64d8164f8f8d538b29344 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\7ebbdc9ba790859c3971198a8791fda1 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\8e2853455767e44b989f0f092bfe289d - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\9a80dd7ae13d00e679f815b7daa643f8 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\a3080a33de7e04e22e3076303af6c0ec - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\c2a8f68418ce54c96e507f0792437fc4 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\c72dad31ad76dcf2dd9169256c9618cb - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\cbbd8e66f04bccf20c7ebf184b9d5dfa - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\de266c735192c9f640a861fce6eda08f - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\e06aeae46e96c9312e04d752761f53bd - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\e24aa45a75c7d8195b469cd1f201c94c - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\edb99439d9e44d9c707488074210f4f6 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\fbd818906f5ca59ca2dc763f9e2c2e8b7f669ade - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download\SharedFileCache - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\Download - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\PostRebootEventCache.V2 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\2B81F1BF-356C-4FA1-90F1-7581A62C6764\sls.cab - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\2B81F1BF-356C-4FA1-90F1-7581A62C6764 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\522D76A4-93E1-47F8-B8CE-07C937AD1A1E\sls.cab - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\522D76A4-93E1-47F8-B8CE-07C937AD1A1E - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\855E8A7C-ECB4-4CA3-B045-1DFA50104289\sls.cab - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\855E8A7C-ECB4-4CA3-B045-1DFA50104289 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\8B24B027-1DEE-BABB-9A95-3517DFB9C552\sls.cab - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\8B24B027-1DEE-BABB-9A95-3517DFB9C552 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\9482F4B4-E343-43B6-B170-9A65BC822C77\sls.cab - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\9482F4B4-E343-43B6-B170-9A65BC822C77 - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\E7A50285-D08D-499D-9FF8-180FDC2332BC\sls.cab - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS\E7A50285-D08D-499D-9FF8-180FDC2332BC - PermissionError
+ERROR: C:\Windows\SoftwareDistribution\SLS - PermissionError
+ERROR: [WinError 5] Access is denied: 'C:\\Windows\\SoftwareDistribution\\ReportingEvents.log'
+Total=155Gb Use=134Gb Free=20Gb Used=86.59%
+DISK Cleaned: 2Gb
