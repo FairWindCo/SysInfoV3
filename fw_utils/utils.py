@@ -52,7 +52,7 @@ def check_folder(path: str, user: str = 'postgres', rights: int = 770, can_creat
 
 
 def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_pipe: bool = False,
-                       as_user: str = None, timeout: int = None):
+                       as_user: str = None, timeout: int = None, in_shell: bool = False):
     command_for_execute = []
     if in_sudo:
         command_for_execute.append('sudo')
@@ -68,7 +68,7 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
         command_for_execute.extend(arguments)
     logging.debug(f'COMMAND {" ".join(command_for_execute)} ')
     try:
-        subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=in_shell)
         output_stream, err_stream = subp.communicate(timeout=timeout)
         if subp.returncode != 0:
             logging.warning(f"RETURN CODE NON ZERO: {subp.returncode} {err_stream.decode()}")
