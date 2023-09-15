@@ -1,11 +1,13 @@
 import logging
-import os.path
 
-from fw_utils.utils import create_path, execute_os_command, append_data_to_config
+from fw_utils.utils import execute_os_command, append_data_to_config, check_folder
 from kerberos.linux_kerberos import init_key
 
 
 class MountControl:
+    mount_point_permission = 777
+    mount_point_owner = 'postgres'
+
     def __init__(self, device_for_mount: str, mount_point: str, kerberos_keytab: str = None) -> None:
         super().__init__()
         self.mount_device = device_for_mount
@@ -13,10 +15,7 @@ class MountControl:
         self.kerberos_keytab = kerberos_keytab
 
     def check_mount_point_exists(self, try_create: bool = True):
-        if os.path.exists(self.mount_point):
-            return True
-        else:
-            return create_path(self.mount_point)
+        return check_folder(self.mount_point, self.mount_point_owner, self.mount_point_permission, try_create)
 
     def mount(self):
         if self.check_mount_point_exists():

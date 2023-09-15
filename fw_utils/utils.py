@@ -29,7 +29,7 @@ def create_path(path_for_create: str):
     return True
 
 
-def change_permissions(path: str, user: str = 'postgres', rights: int = 770):
+def change_permissions(path: str, user: str = 'postgres', rights: int = 777):
     if os.path.exists(path):
         logging.debug(f"change attribute on folder: {path}")
         os.chmod(path, rights)
