@@ -27,9 +27,9 @@ class PostgresqlCommand:
         if check_folder(self.dir_for_backup, user=self.command_user, can_create=self.can_create_backup_folder,
                         rights=self.backup_folder_permissions):
             if self.connection_host:
-                command = f'pg_dump --dbname={db_name} --host={self.connection_host} -F c | gzip -9 -c >{backup_path}'
+                command = f'/usr/bin/pg_dump --dbname={db_name} --host={self.connection_host} -F c | gzip -9 -c >{backup_path}'
             else:
-                command = f'pg_dump --dbname={db_name} -F c | gzip -9 -c >{backup_path}'
+                command = f'/usr/bin/pg_dump --dbname={db_name} -F c | gzip -9 -c >{backup_path}'
             result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True, as_user=self.command_user)
             if not result:
                 logging.error(f"BACKUP ERROR: {err}")
