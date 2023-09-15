@@ -24,7 +24,7 @@ class PostgresqlCommand:
 
     def create_backup_file(self, db_name: str, backup_name: str):
         backup_path = os.path.join(self.dir_for_backup, backup_name)
-        if check_folder(backup_path, user=self.command_user, can_create=self.can_create_backup_folder,
+        if check_folder(self.dir_for_backup, user=self.command_user, can_create=self.can_create_backup_folder,
                         rights=self.backup_folder_permissions):
             if self.connection_host:
                 command = f'pg_dump --dbname={db_name} --host={self.connection_host} -F c | gzip -9 -c >{backup_path}'
