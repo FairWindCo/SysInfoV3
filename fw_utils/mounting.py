@@ -7,6 +7,7 @@ from kerberos.linux_kerberos import init_key
 class MountControl:
     mount_point_permission = 0o777
     mount_point_owner = 'postgres'
+    mount_options = 'sec=krb5,dir_mode=0777,file_mode=0666'
 
     def __init__(self, device_for_mount: str, mount_point: str, kerberos_keytab: str = None) -> None:
         super().__init__()
@@ -22,7 +23,11 @@ class MountControl:
             if self.kerberos_keytab:
                 if not init_key(self.kerberos_keytab, in_sudo=True):
                     logging.warning(f"init key error")
-            result, *_ = execute_os_command('mount', '-t', 'cifs', '-o', 'sec=krb5',
+            commands = ['mount', '-t', 'cifs']
+            if self.mount_options:
+                commands.append('-o')
+                commands.append(self.mount_options)
+            result, *_ = execute_os_command(*commands,
                                             self.mount_device, self.mount_point,
                                             in_sudo=True)
             return result
