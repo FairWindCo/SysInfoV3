@@ -38,7 +38,19 @@ class PostgresqlCommand:
             return result
         else:
             return False
-        # self.execute_command_with_pipe(command)
+
+    def clone_db(self, db_name: str, source_host: str, dest_db_name:str=None):
+        dest_db_name = dest_db_name if dest_db_name else db_name
+
+        host_src = f'--host={source_host}' if source_host else ''
+        host_dsr = f'--host={self.connection_host}' if self.connection_host else ''
+
+        command = f'/usr/bin/pg_dump --dbname={db_name} {host_src} -F c | /usr/bin/pg_restore {host_dsr} -d {dest_db_name} -c'
+        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
+                                               as_user=self.command_user, in_shell=False, working_dir=None)
+        if not result:
+            logging.error(f"BACKUP ERROR: {err}")
+        return result
 
     def get_backup_file_name(self, db_name):
         current_date = datetime.datetime.now().strftime(self.date_template)

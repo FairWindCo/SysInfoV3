@@ -2,7 +2,6 @@ import logging
 
 from fw_postgre_backup.postgre_commands import process_backup
 from fw_utils.mounting import mount_protocol
-from fw_utils.utils import execute_os_command
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
