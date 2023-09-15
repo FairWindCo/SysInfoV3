@@ -5,7 +5,7 @@ import shutil
 from subprocess import Popen, PIPE
 
 from fw_utils.clear_old_file import clear_old_backup
-from fw_utils.utils import create_path
+from fw_utils.utils import create_path, execute_os_command
 
 
 class PostgresqlCommand:
@@ -32,7 +32,11 @@ class PostgresqlCommand:
             command = f'pg_dump --dbname={db_name} --host={self.connection_host} -F d | gzip -9 -c >{backup_path}'
         else:
             command = f'pg_dump --dbname={db_name} -F d | gzip -9 -c >{backup_path}'
-        self.execute_command_with_pipe(command)
+        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True, as_user=self.command_user)
+        if not result:
+            logging.error(f"BACKUP ERROR: {err}")
+        return result
+        #self.execute_command_with_pipe(command)
 
     def get_backup_file_name(self, db_name):
         current_date = datetime.datetime.now().strftime(self.date_template)
