@@ -68,7 +68,8 @@ def execute_os_command(*commands: str, in_sudo: bool = True, has_pipe: bool = Fa
     if has_pipe:
         command_for_execute.append('bash')
         command_for_execute.append('-c')
-        command_for_execute.append(f"\'{' '.join(commands)}\'")
+        #command_for_execute.append(f"\'{' '.join(commands)}\'")
+        command_for_execute.append(' '.join(commands))
     else:
         command_for_execute.extend(commands)
     # logging.debug(f'ARGS: {command_for_execute} ')
