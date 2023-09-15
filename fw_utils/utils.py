@@ -1,5 +1,6 @@
 import logging
 import os
+import shutil
 from subprocess import Popen, PIPE, TimeoutExpired, SubprocessError
 
 
@@ -26,6 +27,27 @@ def create_path(path_for_create: str):
         if not current_path_element:
             break
     return True
+
+
+def change_permissions(path: str, user: str = 'postgres', rights: int = 770):
+    if os.path.exists(path):
+        os.chmod(path, rights)
+        shutil.chown(path, user=user)
+        return True
+    else:
+        logging.warning(f"Path {path} - does not exists!")
+        return False
+
+
+def check_folder(path: str, user: str = 'postgres', rights: int = 770, can_create: bool = True):
+    if os.path.exists(path):
+        return change_permissions(path, user, rights)
+    elif can_create:
+        create_path(path)
+        return change_permissions(path, user, rights)
+    else:
+        logging.warning(f"Path {path} - does not exists!")
+        return False
 
 
 def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_pipe: bool = False,

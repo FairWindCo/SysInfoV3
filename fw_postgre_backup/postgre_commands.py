@@ -2,10 +2,9 @@ import datetime
 import logging
 import os.path
 import shutil
-from subprocess import Popen, PIPE
 
 from fw_utils.clear_old_file import clear_old_backup
-from fw_utils.utils import create_path, execute_os_command
+from fw_utils.utils import execute_os_command, check_folder
 
 
 class PostgresqlCommand:
@@ -14,6 +13,8 @@ class PostgresqlCommand:
     clear_backup_file_format = '%s_[0-9]{6}\.dmp\.gz'
     delete_file_age_days = 7
     safe_last_files_num = 5
+    can_create_backup_folder = True
+    backup_folder_permissions = 770
 
     def __init__(self, system_user: str = 'postgres', host: str = None, backup_dir: str = '/tmp') -> None:
         super().__init__()
@@ -21,22 +22,21 @@ class PostgresqlCommand:
         self.connection_host = host
         self.dir_for_backup = backup_dir
 
-    def execute_command_with_pipe(self, command):
-        commands_args = ['sudo', '-u', self.command_user, 'bash', '-c', command]
-        subp = Popen(commands_args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        subp.wait()
-
     def create_backup_file(self, db_name: str, backup_name: str):
         backup_path = os.path.join(self.dir_for_backup, backup_name)
-        if self.connection_host:
-            command = f'pg_dump --dbname={db_name} --host={self.connection_host} -F c | gzip -9 -c >{backup_path}'
+        if check_folder(backup_path, user=self.command_user, can_create=self.can_create_backup_folder,
+                        rights=self.backup_folder_permissions):
+            if self.connection_host:
+                command = f'pg_dump --dbname={db_name} --host={self.connection_host} -F c | gzip -9 -c >{backup_path}'
+            else:
+                command = f'pg_dump --dbname={db_name} -F c | gzip -9 -c >{backup_path}'
+            result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True, as_user=self.command_user)
+            if not result:
+                logging.error(f"BACKUP ERROR: {err}")
+            return result
         else:
-            command = f'pg_dump --dbname={db_name} -F c | gzip -9 -c >{backup_path}'
-        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True, as_user=self.command_user)
-        if not result:
-            logging.error(f"BACKUP ERROR: {err}")
-        return result
-        #self.execute_command_with_pipe(command)
+            return False
+        # self.execute_command_with_pipe(command)
 
     def get_backup_file_name(self, db_name):
         current_date = datetime.datetime.now().strftime(self.date_template)
@@ -49,9 +49,13 @@ class PostgresqlCommand:
         return os.path.join(self.dir_for_backup, self.get_backup_file_name(db_name))
 
     def copy_backup_to_dest(self, db_name, dest_folder):
-        if create_path(dest_folder):
+        if check_folder(dest_folder, user=self.command_user, can_create=self.can_create_backup_folder,
+                        rights=self.backup_folder_permissions):
             src = self.get_backup_full_path(db_name)
-            shutil.copy2(src, dest_folder)
+            if os.path.exists(src):
+                shutil.copy2(src, dest_folder)
+            else:
+                logging.error(f"FILE BACKUP {src} - not exists!")
         else:
             logging.error(f"NO DEST PATH {dest_folder}")
 
