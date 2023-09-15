@@ -1,7 +1,7 @@
 import logging
 import os.path
 
-from fw_utils.utils import create_path, execute_os_command
+from fw_utils.utils import create_path, execute_os_command, append_data_to_config
 from kerberos.linux_kerberos import init_key
 
 
@@ -37,7 +37,6 @@ class MountControl:
             for mount_line in mounts.split(b'\n'):
                 if mount_line:
                     mount_elements = mount_line.split(b' ')[:3]
-                    print(mount_elements)
                     device, _, mount_point = mount_elements
                     if device.decode() == self.mount_device and mount_point.decode() == self.mount_point:
                         return True
@@ -50,7 +49,7 @@ class MountControl:
         execute_os_command('umount', self.mount_point, in_sudo=True)
 
 
-def mount_protocol(config: dict, execute_procedure):
+def mount_protocol(config: dict, execute_procedure, stop_if_error: bool = False):
     destination_dirs = config.get('destination_dirs', [])
     mounter_controls = []
     if 'mount_points' in config:
@@ -63,6 +62,10 @@ def mount_protocol(config: dict, execute_procedure):
                         mounter_controls.append(mounter)
                 else:
                     logging.error("MOUNT ERROR")
+                    append_data_to_config(config, 'errors_list',
+                                          f'MOUNT {mounter.mount_device} on {mounter.mount_point}')
+                    if stop_if_error:
+                        return
             else:
                 destination_dirs.append(mounter.mount_point)
     config['destination_dirs'] = destination_dirs

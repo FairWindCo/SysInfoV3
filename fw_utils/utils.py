@@ -3,6 +3,12 @@ import os
 from subprocess import Popen, PIPE, TimeoutExpired, SubprocessError
 
 
+def append_data_to_config(config_dict: dict, key: str = 'error_list', value: str = None):
+    list_values = config_dict.get(key, [])
+    list_values.append(value)
+    config_dict[key] = list_values
+
+
 def create_path(path_for_create: str):
     path_element = ''
     while True:
