@@ -70,9 +70,10 @@ def execute_os_command(*commands: str, in_sudo: bool = True, has_pipe: bool = Fa
         command_for_execute.append('/usr/bin/sh')
         #command_for_execute.append('-c')
         #command_for_execute.append(f"\'{' '.join(commands)}\'")
-        command_for_execute.append("<<'SCRIPT'")
+        command_for_execute.append("<<'SCRIPT'\n")
         command_for_execute.extend(commands)
-        command_for_execute.append("SCRIPT")
+        command_for_execute.append("\n")
+        command_for_execute.append("SCRIPT\n")
         #command_for_execute.append(' '.join(commands))
     else:
         command_for_execute.extend(commands)
