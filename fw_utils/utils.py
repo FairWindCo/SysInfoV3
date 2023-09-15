@@ -65,7 +65,7 @@ def execute_os_command(*commands: str,  in_sudo: bool = True, has_pipe: bool = F
         command_for_execute.append(f"\'{' '.join(commands)}\'")
     else:
         command_for_execute.extend(commands)
-    logging.debug(f'ARGS: {command_for_execute} ')
+    #logging.debug(f'ARGS: {command_for_execute} ')
     logging.debug(f'COMMAND {" ".join(command_for_execute)} ')
     try:
         subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=in_shell)
