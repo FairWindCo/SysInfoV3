@@ -2,6 +2,7 @@ import logging
 
 from fw_postgre_backup.postgre_commands import process_backup
 from fw_utils.mounting import mount_protocol
+from fw_utils.utils import execute_os_command
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
@@ -17,4 +18,5 @@ if __name__ == "__main__":
         'use_temp': False
     }
     logging.debug(f"CURRENT CONFIG: {backup_config}")
+    execute_os_command('echo "test"', in_sudo=True, has_pipe=True, as_user='postgre')
     mount_protocol(backup_config, process_backup)
