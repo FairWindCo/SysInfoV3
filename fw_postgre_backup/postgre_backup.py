@@ -6,7 +6,7 @@ from fw_utils.mounting import mount_protocol
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.DEBUG)
     backup_config = {
-        'kerberos_key_file': '/etc/posgre0102.keytab',
+        'kerberos_key_file': '/etc/krb5.keytab',
         'backup_db': ['medoc03'],
         'mount_points': {
             '//bkp0201.bs.local.erc/postgresql': '/mnt/bkp0201',
