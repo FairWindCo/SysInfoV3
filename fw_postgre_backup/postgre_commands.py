@@ -14,7 +14,7 @@ class PostgresqlCommand:
     delete_file_age_days = 7
     safe_last_files_num = 5
     can_create_backup_folder = True
-    backup_folder_permissions = 770
+    backup_folder_permissions = 0o777
 
     def __init__(self, system_user: str = 'postgres', host: str = None, backup_dir: str = '/tmp') -> None:
         super().__init__()

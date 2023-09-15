@@ -5,7 +5,7 @@ from kerberos.linux_kerberos import init_key
 
 
 class MountControl:
-    mount_point_permission = 777
+    mount_point_permission = 0o777
     mount_point_owner = 'postgres'
 
     def __init__(self, device_for_mount: str, mount_point: str, kerberos_keytab: str = None) -> None:
