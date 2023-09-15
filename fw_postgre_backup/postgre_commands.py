@@ -29,7 +29,7 @@ class PostgresqlCommand:
     def create_backup_file(self, db_name: str, backup_name: str):
         backup_path = os.path.join(self.dir_for_backup, backup_name)
         if self.connection_host:
-            command = f'pg_dump --dbname={db_name} --host={self.connection_host} -F d | gzip -9 -c >{backup_path}'
+            command = f'pg_dump --dbname={db_name} --host={self.connection_host} -F c | gzip -9 -c >{backup_path}'
         else:
             command = f'pg_dump --dbname={db_name} -F d | gzip -9 -c >{backup_path}'
         result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True, as_user=self.command_user)
