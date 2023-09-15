@@ -51,22 +51,31 @@ def check_folder(path: str, user: str = 'postgres', rights: int = 770, can_creat
         return False
 
 
-def execute_os_command(*commands: str,  in_sudo: bool = True, has_pipe: bool = False,
-                       as_user: str = None, timeout: int = None, in_shell: bool = False):
+def execute_os_command(*commands: str, in_sudo: bool = True, has_pipe: bool = False,
+                       as_user: str = None, timeout: int = None, in_shell: bool = False,
+                       working_dir: str = None, like_login_sudo: bool = True):
     command_for_execute = []
     if in_sudo:
         command_for_execute.append('sudo')
         if as_user:
             command_for_execute.append('-u')
             command_for_execute.append(as_user)
+        if working_dir:
+            command_for_execute.append('-D')
+            command_for_execute.append(working_dir)
+        if like_login_sudo:
+            command_for_execute.append('-i')
     if has_pipe:
         command_for_execute.append('bash')
         command_for_execute.append('-c')
         command_for_execute.append(f"\'{' '.join(commands)}\'")
     else:
         command_for_execute.extend(commands)
-    #logging.debug(f'ARGS: {command_for_execute} ')
-    logging.debug(f'COMMAND {" ".join(command_for_execute)} ')
+    # logging.debug(f'ARGS: {command_for_execute} ')
+    try:
+        logging.debug(f'COMMAND {" ".join(command_for_execute)} ')
+    except TypeError:
+        logging.warning(f'COMMAND ARGUMENTS INCORRECT: {command_for_execute} ')
     try:
         subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=in_shell)
         output_stream, err_stream = subp.communicate(timeout=timeout)
