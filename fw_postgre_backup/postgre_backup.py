@@ -14,7 +14,7 @@ if __name__ == "__main__":
         },
         # 'destination_dirs': ['/mnt/bkp0201', '/mnt/bkp0101']
         'tmp_dir': '/tmp',
-        'use_temp': True
+        'use_temp': False
     }
     logging.debug(f"CURRENT CONFIG: {backup_config}")
     mount_protocol(backup_config, process_backup)
