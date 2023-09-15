@@ -51,7 +51,7 @@ def check_folder(path: str, user: str = 'postgres', rights: int = 770, can_creat
         return False
 
 
-def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_pipe: bool = False,
+def execute_os_command(*commands: str,  in_sudo: bool = True, has_pipe: bool = False,
                        as_user: str = None, timeout: int = None, in_shell: bool = False):
     command_for_execute = []
     if in_sudo:
@@ -62,10 +62,9 @@ def execute_os_command(command: str, *arguments: str, in_sudo: bool = True, has_
     if has_pipe:
         command_for_execute.append('bash')
         command_for_execute.append('-c')
-        command_for_execute.append(f"\'{' '.join([command, *arguments])}\'")
+        command_for_execute.append(f"\'{' '.join(commands)}\'")
     else:
-        command_for_execute.append(command)
-        command_for_execute.extend(arguments)
+        command_for_execute.extend(commands)
     logging.debug(f'COMMAND {" ".join(command_for_execute)} ')
     try:
         subp = Popen(command_for_execute, stdin=PIPE, stdout=PIPE, stderr=PIPE, shell=in_shell)
