@@ -19,4 +19,4 @@ if __name__ == "__main__":
     }
     logging.debug(f"CURRENT CONFIG: {backup_config}")
     execute_os_command('echo "test"', in_sudo=True, has_pipe=True, as_user='postgres')
-    mount_protocol(backup_config, process_backup)
+    #mount_protocol(backup_config, process_backup)
