@@ -4,7 +4,7 @@
  export http_proxy=http://fw01.bs.local.erc:8080/
 
  apt-get install libssl-dev
- apt install libkrb5-dev
+
 
 
 /home/admin_root/SysInfoV3/.env/bin/python3 -m pip install rsa --proxy http://fw01.bs.local.erc:8080/
@@ -13,6 +13,14 @@
 
 requests_ntlm
 
+THIS IS NESSESARY:
+ apt install libkrb5-dev
+
+RUN COMMANDS:
+/home/admin_root/SysInfoV3/.env/bin/pip3 install rsa
+/home/admin_root/SysInfoV3/.env/bin/pip3 install requests
+/home/admin_root/SysInfoV3/.env/bin/pip3 install requests_kerberos
+/home/admin_root/SysInfoV3/.env/bin/pip3 install requests_ntlm
 
 
 certifi==2023.7.22
@@ -31,3 +39,7 @@ requests-kerberos==0.14.0
 requests-ntlm==1.2.0
 rsa==4.9
 urllib3==2.0.4
+
+------------------- FOR SCRIPT -----------------------------------------------
+/home/admin_root/SysInfoV3/.env/bin/python3 -m fw_postgre_backup.postgre_backup
+/home/admin_root/SysInfoV3/.env/bin/python3 -m fw_postgre_backup.postgre_clone
