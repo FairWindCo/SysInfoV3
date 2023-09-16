@@ -20,4 +20,4 @@ class Stage:
             self.finish_success = success
         else:
             self.finish_success &= success
-        self.work_time = self.start_time - datetime.datetime.now()
+        self.work_time = datetime.datetime.now() - self.start_time

@@ -40,7 +40,7 @@ if __name__ == "__main__":
             delta = str(start_time - datetime.datetime.now()).split('.', 2)[0]
             messages.append(f'DB {db}:{source} -cloned, operation time: {delta}')
         else:
-            delta = str(start_time - datetime.datetime.now()).split('.', 2)[0]
+            delta = str(datetime.datetime.now() - start_time).split('.', 2)[0]
             messages.append(f'CLONE ERROR ON DB {db} from {source} operation time: {delta}')
     message = '\n'.join(messages)
     if db_cloned == 0:
