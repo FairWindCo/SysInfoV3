@@ -22,7 +22,7 @@ class PostgresqlCommand:
         self.connection_host = host
         self.dir_for_backup = backup_dir
 
-    def create_backup_file(self, db_name: str, backup_name: str):
+    def create_backup_file(self, db_name: str, backup_name: str) -> bool:
         backup_path = os.path.join(self.dir_for_backup, backup_name)
         if check_folder(self.dir_for_backup, user=self.command_user, can_create=self.can_create_backup_folder,
                         rights=self.backup_folder_permissions):
@@ -39,7 +39,7 @@ class PostgresqlCommand:
         else:
             return False
 
-    def clone_db(self, db_name: str, source_host: str, dest_db_name:str=None):
+    def clone_db(self, db_name: str, source_host: str, dest_db_name: str = None) -> bool:
         dest_db_name = dest_db_name if dest_db_name else db_name
 
         host_src = f'--host={source_host}' if source_host else ''
@@ -52,41 +52,50 @@ class PostgresqlCommand:
             logging.error(f"BACKUP ERROR: {err}")
         return result
 
-    def get_backup_file_name(self, db_name):
+    def get_backup_file_name(self, db_name) -> str:
         current_date = datetime.datetime.now().strftime(self.date_template)
         return self.backup_file_format.format(db_name, current_date)
 
-    def create_date_backup(self, db_name):
-        self.create_backup_file(db_name, self.get_backup_file_name(db_name))
+    def create_date_backup(self, db_name) -> bool:
+        return self.create_backup_file(db_name, self.get_backup_file_name(db_name))
 
-    def get_backup_full_path(self, db_name):
+    def get_backup_full_path(self, db_name) -> str:
         return os.path.join(self.dir_for_backup, self.get_backup_file_name(db_name))
 
-    def copy_backup_to_dest(self, db_name, dest_folder):
+    def copy_backup_to_dest(self, db_name, dest_folder) -> bool:
         if check_folder(dest_folder, user=self.command_user, can_create=self.can_create_backup_folder,
                         rights=self.backup_folder_permissions):
             src = self.get_backup_full_path(db_name)
             if os.path.exists(src):
-                shutil.copy2(src, dest_folder)
+                try:
+                    shutil.copy2(src, dest_folder)
+                    return True
+                except OSError as e:
+                    logging.error(f"FILE COPY {src} TO {dest_folder} - {e}")
+                    return False
             else:
                 logging.error(f"FILE BACKUP {src} - not exists!")
+                return False
         else:
             logging.error(f"NO DEST PATH {dest_folder}")
+            return False
 
-    def clear_old_backup(self, db_name: str, dir_with_backups: str = None):
+    def clear_old_backup(self, db_name: str, dir_with_backups: str = None) -> bool:
         if dir_with_backups is None:
             dir_with_backups = self.dir_for_backup
         format_search = self.clear_backup_file_format % db_name
-        clear_old_backup(dir_with_backups, format_search,
-                         self.delete_file_age_days,
-                         self.safe_last_files_num)
+        return clear_old_backup(dir_with_backups, format_search,
+                                self.delete_file_age_days,
+                                self.safe_last_files_num)
 
-    def delete_backup(self, db_name: str):
+    def delete_backup(self, db_name: str) -> bool:
         full_path = self.get_backup_full_path(db_name)
         try:
             os.remove(full_path)
+            return True
         except OSError as e:
             logging.error(f"DELETE FILE ERROR: {full_path} - {e}")
+            return False
 
     def backup_info(self, db_name: str):
         full_path = self.get_backup_full_path(db_name)
@@ -97,7 +106,8 @@ class PostgresqlCommand:
             return 0, None
 
 
-def process_backup(config: dict):
+def process_backup(config: dict, stage):
+    result = True
     use_tmp = config.get('use_temp', True)
     destination_dirs = config.get('destination_dirs', []).copy()
     if use_tmp:
@@ -106,9 +116,16 @@ def process_backup(config: dict):
         directory_to_backup = destination_dirs.pop()
     backup = PostgresqlCommand(backup_dir=directory_to_backup)
     for db in config.get('backup_db', []):
-        backup.create_date_backup(db)
+        res = backup.create_date_backup(db)
+        result &= res
         for dest_dir in destination_dirs:
-            backup.copy_backup_to_dest(db, dest_dir)
-            backup.clear_old_backup(db, dest_dir)
-        if use_tmp:
-            backup.delete_backup(db)
+            if res:
+                result &= backup.copy_backup_to_dest(db, dest_dir)
+                result &= backup.clear_old_backup(db, dest_dir)
+        if use_tmp and res:
+            result &= backup.delete_backup(db)
+        else:
+            result &= backup.clear_old_backup(db)
+    if not result:
+        stage.set_warning()
+    return result

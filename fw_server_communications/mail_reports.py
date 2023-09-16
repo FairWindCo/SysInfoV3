@@ -6,6 +6,7 @@ import smtplib
 import sys
 import time
 from datetime import datetime
+from os.path import basename
 
 
 def send_mail(message, config):
@@ -40,7 +41,7 @@ def send_mail(message, config):
         }
 
 
-def format_message(message_text: str, config: dict, error: bool = False):
+def format_message(message_text: str, config: dict, error: bool = False, files=None):
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
     host = platform.node()
@@ -85,11 +86,20 @@ def format_message(message_text: str, config: dict, error: bool = False):
     # The email client will try to render the last part first
     message.attach(part1)
     message.attach(part2)
+    for f in files or []:
+        with open(f, "rb") as fil:
+            part = smtplib.MIMEApplication(
+                fil.read(),
+                Name=basename(f)
+            )
+        # After the file is closed
+        part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
+        message.attach(part)
     return message
 
 
-def send_mail_mime(message, config, is_error=False):
-    msg = format_message(message, config, is_error)
+def send_mail_mime(message, config, is_error=False, files=None):
+    msg = format_message(message, config, is_error, files=files)
     return send_mail(msg.as_string(), config)
 
 

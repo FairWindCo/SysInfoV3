@@ -4,16 +4,20 @@ import datetime
 class Stage:
     def __init__(self) -> None:
         super().__init__()
-        self.stage_num = 0
-        self.stage = {}
         self.start_time = datetime.datetime.now()
+        self.warning = False
+        self.finish_success = None
+        self.work_time = None
 
-    def add_stage(self, message):
-        self.stage_num = self.stage_num + 1
-        self.stage[self.stage_num] = {
-            'name': message,
-            'start': datetime.datetime.now(),
-            'warning': [],
-            'result': None
-        }
+    def set_warning(self):
+        self.warning = True
 
+    def set_error(self):
+        self.finish_success = False
+
+    def end_work(self, success: bool = True):
+        if self.finish_success is None:
+            self.finish_success = success
+        else:
+            self.finish_success &= success
+        self.work_time = self.start_time - datetime.datetime.now()

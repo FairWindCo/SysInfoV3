@@ -2,6 +2,8 @@ import logging
 import sys
 from io import StringIO
 
+from fw_automations_utils.config import get_config
+
 IS_ERROR_LOGGED = False
 
 
@@ -39,6 +41,29 @@ def info(msg, *args, **kwargs):
 
 def debug(msg, *args, **kwargs):
     logging.debug(msg, *args, **kwargs)
+
+
+def setup_default_logger_from_config(config: dict):
+    log_file = config.get('log_file', 'operation.log')
+    logging.basicConfig(filename=log_file, encoding='utf-8',
+                        level=get_debug_level_from_config(config))
+
+    logging.debug(f"CURRENT CONFIG: {config}")
+    return log_file
+
+
+def get_config_and_set_logger(config_file='config.json', exit_on_error=True, default_config=None):
+    backup_config = get_config(config_file, default_config=default_config, exit_on_error=exit_on_error)
+    log_file = setup_default_logger_from_config(backup_config)
+    return backup_config, log_file
+
+
+def get_debug_level_from_config(config: dict, default_debug_level=logging.WARNING):
+    str_debug_level = config.get('log_level', None)
+    if str_debug_level:
+        return get_debug_level(str_debug_level)
+    else:
+        return default_debug_level
 
 
 def get_debug_level(level_name: str):

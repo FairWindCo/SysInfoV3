@@ -1,6 +1,6 @@
 import logging
 
-from fw_utils.utils import execute_os_command, append_data_to_config, check_folder
+from fw_utils.utils import execute_os_command, check_folder
 from kerberos.linux_kerberos import init_key
 
 
@@ -50,10 +50,11 @@ class MountControl:
             return False
 
     def unmount(self):
-        execute_os_command('umount', self.mount_point, in_sudo=True)
+        result, *_ = execute_os_command('umount', self.mount_point, in_sudo=True)
+        return result
 
 
-def mount_protocol(config: dict, execute_procedure, stop_if_error: bool = False):
+def mount_protocol(config: dict, execute_procedure, stage, stop_if_error: bool = False):
     destination_dirs = config.get('destination_dirs', [])
     mounter_controls = []
     if 'mount_points' in config:
@@ -66,13 +67,16 @@ def mount_protocol(config: dict, execute_procedure, stop_if_error: bool = False)
                         mounter_controls.append(mounter)
                 else:
                     logging.error("MOUNT ERROR")
-                    append_data_to_config(config, 'errors_list',
-                                          f'MOUNT {mounter.mount_device} on {mounter.mount_point}')
                     if stop_if_error:
+                        stage.set_error()
                         return
+                    else:
+                        stage.set_warning()
             else:
                 destination_dirs.append(mounter.mount_point)
     config['destination_dirs'] = destination_dirs
-    execute_procedure(config)
+    execute_procedure(config, stage)
     for mounter in mounter_controls:
-        mounter.unmount()
+        result = mounter.unmount()
+        if not result:
+            stage.set_warning()
