@@ -8,7 +8,7 @@ from fw_server_communications.mail_reports import send_mail_mime
 if __name__ == "__main__":
     backup_config = {
         'clone_backup_db': {
-            'medoc03': 'postgre0101.bs.local.erc',
+            #'medoc03': 'postgre0101.bs.local.erc',
             'medoc01': 'postgre0101.bs.local.erc',
         },
         "special_url": "https://inventory0201.bs.local.erc/special",
@@ -18,8 +18,9 @@ if __name__ == "__main__":
         'send_success_mail': True,
         'send_report_web': True,
         'send_report_code': 35,
-        "from_mail": "bspd@local.erc",
-        "to_mail": "bspd@local.erc",
+        "from_mail": "Department_BSP@erc.ua",
+        "to_mail": "Department_BSP@erc.ua",
+        "proxy": "http://fw01.bs.local.erc:8080/",
         "server": "web02.local.erc",
         "port": 25,
         "safe_time": 4,
