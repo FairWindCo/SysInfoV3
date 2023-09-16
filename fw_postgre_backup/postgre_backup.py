@@ -19,6 +19,7 @@ if __name__ == "__main__":
         'tmp_dir': '/tmp',
         'use_temp': False,
         "special_url": "https://inventory0201.bs.local.erc/special",
+        "token_url": "https://inventory0201.bs.local.erc/token",
         "public_key": "public.pem",
         'send_report_mail': True,
         'send_success_mail': True,
