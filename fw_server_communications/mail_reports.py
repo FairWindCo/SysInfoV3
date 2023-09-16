@@ -6,6 +6,7 @@ import smtplib
 import sys
 import time
 from datetime import datetime
+from email.mime.application import MIMEApplication
 from os.path import basename
 
 
@@ -88,7 +89,7 @@ def format_message(message_text: str, config: dict, error: bool = False, files=N
     message.attach(part2)
     for f in files or []:
         with open(f, "rb") as fil:
-            part = smtplib.MIMEApplication(
+            part = MIMEApplication(
                 fil.read(),
                 Name=basename(f)
             )
