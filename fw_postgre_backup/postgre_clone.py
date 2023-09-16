@@ -7,7 +7,7 @@ from fw_server_communications.mail_reports import send_mail_mime
 
 if __name__ == "__main__":
     backup_config = {
-        'clone_backup_db': ['medoc03'],
+        'clone_backup_db': {'medoc03': 'postgre0101.bs.local.erc'},
         "special_url": "https://inventory0201.bs.local.erc/special",
         "public_key": "public.pem",
         'send_report_mail': True,
@@ -25,16 +25,16 @@ if __name__ == "__main__":
     backup = PostgresqlCommand()
     db_cloned = 0
     messages = []
-    clone_list = backup_config.get('clone_backup_db', [])
-    for db in clone_list:
+    clone_list = backup_config.get('clone_backup_db', {})
+    for db, source in clone_list.items():
         start_time = datetime.datetime.now()
-        if backup.clone_db(db):
+        if backup.clone_db(db, source):
             db_cloned += 1
             delta = str(start_time - datetime.datetime.now()).split('.', 2)[0]
-            messages.append(f'DB {db} -cloned, operation time: {delta}')
+            messages.append(f'DB {db}:{source} -cloned, operation time: {delta}')
         else:
             delta = str(start_time - datetime.datetime.now()).split('.', 2)[0]
-            messages.append(f'CLONE ERROR ON DB {db} operation time: {delta}')
+            messages.append(f'CLONE ERROR ON DB {db} from {source} operation time: {delta}')
     message = '\n'.join(messages)
     if db_cloned == 0:
         report_to_server(message, backup_config, True)
