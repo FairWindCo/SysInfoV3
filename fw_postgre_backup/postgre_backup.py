@@ -25,11 +25,14 @@ if __name__ == "__main__":
         'send_success_mail': True,
         'send_report_web': True,
         'send_report_code': 37,
-        "from_mail": "bspd@local.erc",
-        "to_mail": "bspd@local.erc",
-        "server": "web02.local.erc",
+        "from_mail": "Department_BSP@erc.ua",
+        "to_mail": "Department_BSP@erc.ua",
+        "proxy": "http://fw01.bs.local.erc:8080/",
+        'log_file': '/home/admin_root/backup.log',
+        "server": "WEBLOCAL0201.local.erc",
         "port": 25,
         "safe_time": 4,
+        'log_level': 'DEBUG',
     }
     backup_config, log_file = get_config_and_set_logger('backup.json', exit_on_error=False,
                                                         default_config=backup_config)
