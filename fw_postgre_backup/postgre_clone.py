@@ -8,7 +8,7 @@ from fw_server_communications.mail_reports import send_mail_mime
 if __name__ == "__main__":
     backup_config = {
         'clone_backup_db': {
-            # 'medoc03': 'postgre0101.bs.local.erc',
+            'medoc03': 'postgre0101.bs.local.erc',
             'medoc01': 'postgre0101.bs.local.erc',
         },
         "special_url": "https://inventory0201.bs.local.erc/special",
