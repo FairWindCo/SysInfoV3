@@ -20,7 +20,7 @@ if __name__ == "__main__":
         "port": 25,
         "safe_time": 4,
     }
-    backup_config, log_file = get_config_and_set_logger('backup.json', exit_on_error=False,
+    backup_config, log_file = get_config_and_set_logger('clone.json', exit_on_error=False,
                                                         default_config=backup_config)
     backup = PostgresqlCommand()
     db_cloned = 0
