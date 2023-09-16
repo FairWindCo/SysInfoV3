@@ -22,9 +22,10 @@ if __name__ == "__main__":
         "to_mail": "Department_BSP@erc.ua",
         "proxy": "http://fw01.bs.local.erc:8080/",
         'log_file': '/home/admin_root/clone.log',
-        "server": "web02.local.erc",
+        "server": "WEBLOCAL0201.local.erc",
         "port": 25,
         "safe_time": 4,
+        'log_level': 'DEBUG',
     }
     backup_config, log_file = get_config_and_set_logger('clone.json', exit_on_error=False,
                                                         default_config=backup_config)
