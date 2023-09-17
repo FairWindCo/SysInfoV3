@@ -110,9 +110,19 @@ def get_host_info():
     if result:
         for line in info.split(b'\n'):
             data = line.strip()
-            if data and data[2] == 45:
-                print(data)
+            if data and data[2] == 43:
                 sys_info['services'].append(data[5:].strip().decode())
+
+    else:
+        logging.warning('GET SERVICE ERROR:' + err)
+
+    sys_info['soft'] = []
+    result, _, info, err = execute_os_command('apt', 'list', '--installed', in_sudo=True)
+    if result:
+        for line in info.split(b'\n'):
+            data = line.strip().decode()
+            if data and not data.startswith('lib') and data.find('-dev') == -1:
+                sys_info['soft'].append(data)
 
     else:
         logging.warning('GET SERVICE ERROR:' + err)
