@@ -102,14 +102,14 @@ def get_host_info():
                                 'size': disk['size'],
                             })
             # print(sysinfo["children"][0])
-            sys_info['NumberOfProcessors'] = len(sys_info['cpu_info'])
-            sys_info['cpu_count'] = len(sys_info['cpu_info'])
-            sys_info['hdd_count'] = len(sys_info['hdd_info'])
         except Exception as e:
             logging.error("LOAD SYS INFO ERROR:" + str(e))
 
     else:
         logging.warning('GET HW INFO ERROR:' + err)
+    sys_info['NumberOfProcessors'] = len(sys_info['cpu_info'])
+    sys_info['cpu_count'] = len(sys_info['cpu_info'])
+    sys_info['hdd_count'] = len(sys_info['hdd_info'])
     sys_info['services'] = []
     result, _, info, err = execute_os_command('service', '--status-all', in_sudo=True)
     if result:
