@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import base64
 import json
-
 import logging
 import os
 import platform
@@ -27,6 +26,21 @@ def load_key(key_path):
         sys.exit(-2)
 
 
+def extract_host_name():
+    host, _ = extract_host_domain_name()
+    return host
+
+
+def extract_host_domain_name(default_domain='bs.local.erc'):
+    node_name = platform.node()
+    point_index = node_name.find('.')
+    if point_index > 0:
+        host_name = node_name[:point_index]
+        domain_name = node_name[point_index + 1:]
+        return host_name, domain_name
+    return node_name, default_domain
+
+
 def encrypt_info_dict(info, config=None, use_platform_host=True, dump_dict=True):
     if config is None:
         config = {}
@@ -36,7 +50,7 @@ def encrypt_info_dict(info, config=None, use_platform_host=True, dump_dict=True)
     else:
         public_key = load_key_default()
     if public_key:
-        host = platform.node() if use_platform_host else info.get('host', '')
+        host = extract_host_name() if use_platform_host else info.get('host', '')
         key_info = host + datetime.now().strftime("%d%m%y%H%M%S")
         key = base64.b64encode(encrypt(key_info.encode(), pub_key=public_key))
         info['key'] = key.decode()
