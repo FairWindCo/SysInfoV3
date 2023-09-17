@@ -76,8 +76,8 @@ def get_host_info():
                     sys_info['TotalPhysicalMemory'] = element['size']
                 elif element['id'] == "scsi":
                     sys_info['hdd_info'].append({
-                        'model': element['model'],
-                        'size': element['size'],
+                        #'model': element['model'],
+                        #'size': element['size'],
                     })
                     print(element)
 
@@ -86,7 +86,7 @@ def get_host_info():
             sys_info['cpu_count'] = len(sys_info['cpu_info'])
             sys_info['hdd_count'] = len(sys_info['hdd_info'])
         except Exception as e:
-            logging.error("LOAD SYS INFO ERROR:" + e)
+            logging.error("LOAD SYS INFO ERROR:" + str(e))
 
     else:
         logging.warning('GET HW INFO ERROR:' + err)
