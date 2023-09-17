@@ -125,10 +125,11 @@ def get_host_info():
                     and not data.startswith('python3-')
                     and data.find('-dev') == -1):
                 soft_info = data.split(' ')
+                print(soft_info)
                 if soft_info:
                     sys_info['soft'].append({
                         #'version': soft_info[1],
-                        'name': soft_info[0].strip('/')[0],
+                        #'name': soft_info[0].strip('/')[0],
 
                     })
 
