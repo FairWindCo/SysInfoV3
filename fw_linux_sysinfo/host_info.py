@@ -47,13 +47,13 @@ def get_host_info():
     }
     if result:
         lines = info.split(b'\n')
-        if len(lines) > 9:
-            sys_info['Manufacturer'] = extract_host_info(lines[8])
-            sys_info['OSArchitecture'] = extract_host_info(lines[7])
-            sys_info['Model'] = extract_host_info(lines[9])
-            version = extract_host_info(lines[6])
+        if len(lines) > 10:
+            sys_info['Manufacturer'] = extract_host_info(lines[9])
+            sys_info['OSArchitecture'] = extract_host_info(lines[8])
+            sys_info['Model'] = extract_host_info(lines[10])
+            version = extract_host_info(lines[7])
             sys_info['Version'] = version[6:] if version.startswith('Linux') else version
-            sys_info['sysname'] = extract_host_info(lines[5])
+            sys_info['sysname'] = extract_host_info(lines[6])
             sys_info['InstallDate'] = extract_create_file_time()
         print(lines)
     print(sys_info)
