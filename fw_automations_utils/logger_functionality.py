@@ -46,12 +46,16 @@ def debug(msg, *args, **kwargs):
 def setup_default_logger_from_config(config: dict):
     log_file = config.get('log_file', 'operation.log')
     new_file_log = config.get('new_file_log', True)
-    if new_file_log:
-        logging.basicConfig(filename=log_file, encoding='utf-8',
-                        level=get_debug_level_from_config(config), filemode='w')
+    if log_file:
+        if new_file_log:
+            logging.basicConfig(filename=log_file, encoding='utf-8',
+                                level=get_debug_level_from_config(config), filemode='w')
+        else:
+            logging.basicConfig(filename=log_file, encoding='utf-8',
+                                level=get_debug_level_from_config(config))
     else:
-        logging.basicConfig(filename=log_file, encoding='utf-8',
-                            level=get_debug_level_from_config(config))
+        logger = logging.getLogger()
+        logger.setLevel(get_debug_level_from_config(config))
     logging.debug(f"CURRENT CONFIG: {config}")
     return log_file
 

@@ -1,6 +1,8 @@
 import datetime
+import logging
 import os
 
+from fw_automations_utils.logger_functionality import get_config_and_set_logger
 from fw_server_communications.encrypt.message_sign import extract_host_domain_name
 from fw_utils.utils import execute_os_command
 
@@ -23,8 +25,6 @@ def extract_create_file_time(path: str = '/', format='%d.%m.%Y %H:%M:%S'):
 
 
 def get_host_info():
-    command = f'hostnamectl'
-    result, _, info, err = execute_os_command(command, in_sudo=True)
     host, domain = extract_host_domain_name()
     sys_info = {
         'host': host,
@@ -45,6 +45,7 @@ def get_host_info():
         'cpu_info': []
 
     }
+    result, _, info, err = execute_os_command('hostnamectl', in_sudo=True)
     if result:
         lines = info.split(b'\n')
         if len(lines) > 10:
@@ -55,10 +56,29 @@ def get_host_info():
             sys_info['Version'] = version[6:] if version.startswith('Linux') else version
             sys_info['sysname'] = extract_host_info(lines[6])
             sys_info['InstallDate'] = extract_create_file_time()
+    else:
+        logging.warning('GET HOST INFO ERROR:' + err)
+    logging.debug(sys_info)
+    result, _, info, err = execute_os_command('lshw', in_sudo=True)
+    if result:
+        lines = info.split(b'\n')
         print(lines)
-    print(sys_info)
+    else:
+        logging.warning('GET HW INFO ERROR:' + err)
     return sys_info
 
 
 if __name__ == "__main__":
-    get_host_info()
+    default_config = {
+        "special_url": "https://inventory0201.bs.local.erc/host_info_update",
+        "token_url": "https://inventory0201.bs.local.erc/token",
+        'log_level': 'DEBUG',
+        'log_file': None,
+    }
+    config, log_file = get_config_and_set_logger('backup.json', exit_on_error=False,
+                                                 default_config=default_config)
+
+    try:
+        sys_info = get_host_info()
+    except Exception as e:
+        logging.critical(f"Can`t get system info: {e}")
