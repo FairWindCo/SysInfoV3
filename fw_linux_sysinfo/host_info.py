@@ -59,7 +59,6 @@ def get_host_info():
             sys_info['InstallDate'] = extract_create_file_time()
     else:
         logging.warning('GET HOST INFO ERROR:' + err)
-    logging.debug(sys_info)
     result, _, info, err = execute_os_command('lshw', '-json', in_sudo=True)
     if result:
         try:
@@ -71,14 +70,15 @@ def get_host_info():
                         'NumberOfCores': element['configuration']['cores'],
                         'ThreadCount': element['configuration']['threads'],
                     })
-                    sys_info['SystemFamily']=''
+                    sys_info['SystemFamily'] = ''
                 elif element['id'] == 'memory':
                     sys_info['TotalPhysicalMemory'] = element['size']
-                elif element['id'] == "scsi":
-                    sys_info['hdd_info'].append({
-                        #'model': element['model'],
-                        #'size': element['size'],
-                    })
+                elif element['id'] == "scsi" and element['class'] == 'storage':
+                    for disk in element['children']:
+                        sys_info['hdd_info'].append({
+                            'model': disk['product'],
+                            'size': disk['size'],
+                        })
                     print(element)
 
             # print(sysinfo["children"][0])
@@ -90,6 +90,7 @@ def get_host_info():
 
     else:
         logging.warning('GET HW INFO ERROR:' + err)
+    logging.debug(sys_info)
     return sys_info
 
 
