@@ -27,7 +27,7 @@ def extract_create_file_time(path: str = '/', format='%d.%m.%Y %H:%M:%S'):
 
 def extract_modify_file_time(path: str = '/var/cache/apt/pkgcache.bin', format='%d.%m.%Y %H:%M:%S'):
     if os.path.exists(path):
-        time_stamp = os.stat('/').st_ctime
+        time_stamp = os.stat('/').st_mtime
         date = datetime.datetime.fromtimestamp(time_stamp)
         return date.strftime(format)
     else:
@@ -91,10 +91,11 @@ def get_host_info():
                     sys_info['TotalPhysicalMemory'] = element['size']
                 elif element['class'] == 'storage':
                     for disk in element['children']:
-                        sys_info['hdd_info'].append({
-                            'model': disk['product'],
-                            #'size': disk['size'],
-                        })
+                        if 'size' in disk:
+                            sys_info['hdd_info'].append({
+                                'model': disk['product'],
+                                'size': disk['size'],
+                            })
                     print(element)
 
             # print(sysinfo["children"][0])
@@ -111,8 +112,8 @@ def get_host_info():
     if result:
         for line in info.split(b'\n'):
             data = line.strip()
-            print(data)
             if data and data[2] == b'+':
+                print(data)
                 sys_info['services'].append(data[5:].strip().decode())
 
     else:
