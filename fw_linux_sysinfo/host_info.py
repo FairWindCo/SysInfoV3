@@ -60,7 +60,7 @@ def get_host_info():
     else:
         logging.warning('GET HOST INFO ERROR:' + err)
     logging.debug(sys_info)
-    result, _, info, err = execute_os_command('lshw -json', in_sudo=True)
+    result, _, info, err = execute_os_command('lshw', '-json', in_sudo=True)
     if result:
         try:
             sysinfo = json.loads(info)
