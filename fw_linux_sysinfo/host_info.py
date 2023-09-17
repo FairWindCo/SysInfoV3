@@ -66,13 +66,25 @@ def get_host_info():
             sysinfo = json.loads(info)
             for element in sysinfo["children"][0]['children']:
                 if element['id'] == 'cpu':
-                    print(element)
+                    sys_info['cpu_info'].append({
+                        'model': element['product'],
+                        'NumberOfCores': element['cores'],
+                        'ThreadCount': element['threads'],
+                    })
+                    sys_info['SystemFamily']=''
                 elif element['id'] == 'memory':
-                    print(element)
+                    sys_info['TotalPhysicalMemory'] = element['size']
                 elif element['id'] == "scsi":
+                    sys_info['hdd_info'].append({
+                        'model': element['model'],
+                        'size': element['size'],
+                    })
                     print(element)
 
-            #print(sysinfo["children"][0])
+            # print(sysinfo["children"][0])
+            sys_info['NumberOfProcessors'] = len(sys_info['cpu_info'])
+            sys_info['cpu_count'] = len(sys_info['cpu_info'])
+            sys_info['hdd_count'] = len(sys_info['hdd_info'])
         except Exception as e:
             logging.error("LOAD SYS INFO ERROR:" + e)
 
