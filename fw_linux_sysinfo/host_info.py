@@ -25,6 +25,15 @@ def extract_create_file_time(path: str = '/', format='%d.%m.%Y %H:%M:%S'):
         return ''
 
 
+def extract_modify_file_time(path: str = '/var/cache/apt/pkgcache.bin', format='%d.%m.%Y %H:%M:%S'):
+    if os.path.exists(path):
+        time_stamp = os.stat('/').st_ctime
+        date = datetime.datetime.fromtimestamp(time_stamp)
+        return date.strftime(format)
+    else:
+        return ''
+
+
 def get_host_info():
     host, domain = extract_host_domain_name()
     sys_info = {
@@ -57,6 +66,11 @@ def get_host_info():
             sys_info['Version'] = version[6:] if version.startswith('Linux') else version
             sys_info['sysname'] = extract_host_info(lines[6])
             sys_info['InstallDate'] = extract_create_file_time()
+            sys_info['LastUpdateCheck'] = extract_modify_file_time()
+            sys_info['hotfix'] = [
+                ('last', extract_modify_file_time('/var/lib/apt/extended_states')),
+            ]
+
     else:
         logging.warning('GET HOST INFO ERROR:' + err)
     result, _, info, err = execute_os_command('lshw', '-json', in_sudo=True)
@@ -64,16 +78,18 @@ def get_host_info():
         try:
             sysinfo = json.loads(info)
             for element in sysinfo["children"][0]['children']:
-                if element['id'] == 'cpu':
+                sys_info['SystemFamily'] = " ".join([sysinfo["children"][0]["vendor"],
+                                                     sysinfo["children"][0]["product"],
+                                                     sysinfo["children"][0]["version"]])
+                if element['id'].startswith('cpu'):
                     sys_info['cpu_info'].append({
                         'model': element['product'],
                         'NumberOfCores': element['configuration']['cores'],
                         'ThreadCount': element['configuration']['threads'],
                     })
-                    sys_info['SystemFamily'] = ''
                 elif element['id'] == 'memory':
                     sys_info['TotalPhysicalMemory'] = element['size']
-                elif element['id'] == "scsi" and element['class'] == 'storage':
+                elif element['class'] == 'storage':
                     for disk in element['children']:
                         sys_info['hdd_info'].append({
                             'model': disk['product'],
@@ -90,6 +106,16 @@ def get_host_info():
 
     else:
         logging.warning('GET HW INFO ERROR:' + err)
+    sys_info['services'] = []
+    result, _, info, err = execute_os_command('service', '--status-all', in_sudo=True)
+    if result:
+        for line in info.split(b'\n'):
+            data = line.strip()
+            if data and data[2] == b'+':
+                sys_info['services'].append(data[5:].strip().decode())
+
+    else:
+        logging.warning('GET SERVICE ERROR:' + err)
     logging.debug(sys_info)
     return sys_info
 
