@@ -1,4 +1,5 @@
 import datetime
+import json
 import logging
 import os
 
@@ -59,10 +60,14 @@ def get_host_info():
     else:
         logging.warning('GET HOST INFO ERROR:' + err)
     logging.debug(sys_info)
-    result, _, info, err = execute_os_command('lshw', in_sudo=True)
+    result, _, info, err = execute_os_command('lshw -json', in_sudo=True)
     if result:
-        lines = info.split(b'\n')
-        print(lines)
+        try:
+            sysinfo = json.load(info)
+            print(sysinfo)
+        except Exception as e:
+            logging.error("LOAD SYS INFO ERROR:" + e)
+
     else:
         logging.warning('GET HW INFO ERROR:' + err)
     return sys_info
