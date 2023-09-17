@@ -64,7 +64,9 @@ def get_host_info():
     if result:
         try:
             sysinfo = json.loads(info)
-            print(sysinfo["children"][0]['children'])
+            for element in sysinfo["children"][0]['children']:
+                if element['id'] == 'cpu':
+                    print(element['id'])
             #print(sysinfo["children"][0])
         except Exception as e:
             logging.error("LOAD SYS INFO ERROR:" + e)
