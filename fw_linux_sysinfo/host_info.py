@@ -93,7 +93,7 @@ def get_host_info():
                     for disk in element['children']:
                         sys_info['hdd_info'].append({
                             'model': disk['product'],
-                            'size': disk['size'],
+                            #'size': disk['size'],
                         })
                     print(element)
 
@@ -111,6 +111,7 @@ def get_host_info():
     if result:
         for line in info.split(b'\n'):
             data = line.strip()
+            print(data)
             if data and data[2] == b'+':
                 sys_info['services'].append(data[5:].strip().decode())
 
