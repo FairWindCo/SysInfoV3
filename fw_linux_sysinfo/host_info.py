@@ -175,7 +175,7 @@ if __name__ == "__main__":
         "special_url": "https://inventory0201.bs.local.erc/host_info_update",
         "proxy": "http://fw01.bs.local.erc:8080/",
         "server": "web01.local.erc",
-        'log_level': 'DEBUG',
+        #'log_level': 'DEBUG',
         'log_file': None,
     }
     config, log_file = get_config_and_set_logger(arguments.config, exit_on_error=False,
