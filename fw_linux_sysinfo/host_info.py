@@ -93,7 +93,7 @@ def get_host_info():
                 elif element['id'] == 'memory':
                     sys_info['TotalPhysicalMemory'] = element['size']
                     sys_info['CurrentTotalPhysicalMemory'] = sys_info['TotalPhysicalMemory']
-                    result['IsVirtualMachine'] = sys_info['Model'] == 'Virtual Machine'
+                    sys_info['IsVirtualMachine'] = sys_info['Model'] == 'Virtual Machine'
                 elif element['class'] == 'storage':
                     for disk in element['children']:
                         if 'size' in disk:
