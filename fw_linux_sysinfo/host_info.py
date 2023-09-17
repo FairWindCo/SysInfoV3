@@ -125,8 +125,7 @@ def get_host_info():
                     and not data.startswith('python3-')
                     and data.find('-dev') == -1):
                 soft_info = data.split(' ')
-                if soft_info and len(sys_info) > 1:
-                    print(soft_info, type(sys_info))
+                if soft_info and len(soft_info) > 1:
                     ver_ubuntu_index = soft_info[1].find('ubuntu')
                     sys_info['soft'].append({
                         'version': soft_info[1][:ver_ubuntu_index] if ver_ubuntu_index > 0 else soft_info[1],
