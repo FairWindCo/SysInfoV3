@@ -89,6 +89,8 @@ def get_host_info():
                     })
                 elif element['id'] == 'memory':
                     sys_info['TotalPhysicalMemory'] = element['size']
+                    sys_info['CurrentTotalPhysicalMemory'] = sys_info['TotalPhysicalMemory']
+                    result['IsVirtualMachine'] = sys_info['Model'] == 'Virtual Machine'
                 elif element['class'] == 'storage':
                     for disk in element['children']:
                         if 'size' in disk:
@@ -137,6 +139,13 @@ def get_host_info():
 
     else:
         logging.warning('GET SERVICE ERROR:' + err)
+    sys_info['ip'] = []
+    result, _, info, err = execute_os_command('hostname', '-I', in_sudo=True)
+    if result:
+        sys_info['ip'] = [ip.strip() for ip in info.decode().split(' ')]
+    else:
+        logging.warning('GET IP ERROR:' + err)
+
     logging.debug(sys_info)
     return sys_info
 
