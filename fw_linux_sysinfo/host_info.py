@@ -142,7 +142,7 @@ def get_host_info():
     sys_info['ip'] = []
     result, _, info, err = execute_os_command('hostname', '-I', in_sudo=True)
     if result:
-        sys_info['ip'] = [ip.strip() for ip in info.decode().split(' ')]
+        sys_info['ip'] = [ip.strip() for ip in info.decode().split(' ') if ip]
     else:
         logging.warning('GET IP ERROR:' + err)
 
