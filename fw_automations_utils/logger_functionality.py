@@ -60,8 +60,10 @@ def setup_default_logger_from_config(config: dict):
     return log_file
 
 
-def get_config_and_set_logger(config_file='config.json', exit_on_error=True, default_config=None):
+def get_config_and_set_logger(config_file='config.json', exit_on_error=True, default_config=None, force_debug=False):
     backup_config = get_config(config_file, default_config=default_config, exit_on_error=exit_on_error)
+    if force_debug:
+        backup_config['log_level'] = 'DEBUG'
     log_file = setup_default_logger_from_config(backup_config)
     return backup_config, log_file
 

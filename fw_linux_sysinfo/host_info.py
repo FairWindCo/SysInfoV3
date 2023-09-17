@@ -1,10 +1,13 @@
+import argparse
 import datetime
 import json
 import logging
 import os
+from pprint import pprint
 
 from fw_automations_utils.logger_functionality import get_config_and_set_logger
 from fw_server_communications.encrypt.message_sign import extract_host_domain_name
+from fw_server_communications.inventory_communications import send_info
 from fw_utils.utils import execute_os_command
 
 
@@ -142,7 +145,7 @@ def get_host_info():
     sys_info['ip'] = []
     result, _, info, err = execute_os_command('hostname', '-I', in_sudo=True)
     if result:
-        sys_info['ip'] = [ip.strip() for ip in info.decode().split(' ') if ip]
+        sys_info['ip'] = [ip.strip() for ip in info.decode().split(' ') if len(ip) > 7]
     else:
         logging.warning('GET IP ERROR:' + err)
 
@@ -151,16 +154,58 @@ def get_host_info():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--soft', dest='soft', action='store_true')
+    parser.add_argument('-i', dest='info', action='store_true')
+    parser.add_argument('-f', dest='save')
+    parser.add_argument('-l', dest='load')
+    parser.add_argument('-c', dest='config', default='systeminfo_config.json')
+    parser.add_argument('-p', dest='echo', action='store_true')
+    parser.add_argument('-s', dest='skip', action='store_true')
+    parser.add_argument('-r', dest='report', default=None)
+    parser.add_argument('-d', dest='debug', default=None)
+    parser.add_argument('--ignore_certificate', action="store_true")
+
+    parser.add_argument('--proxy', default=None)
+
+    arguments = parser.parse_args()
+
     default_config = {
-        "special_url": "https://inventory0201.bs.local.erc/host_info_update",
         "token_url": "https://inventory0201.bs.local.erc/token",
+        "special_url": "https://inventory0201.bs.local.erc/host_info_update",
+        "proxy": "http://fw01.bs.local.erc:8080/",
+        "server": "web01.local.erc",
         'log_level': 'DEBUG',
         'log_file': None,
     }
-    config, log_file = get_config_and_set_logger('backup.json', exit_on_error=False,
-                                                 default_config=default_config)
+    config, log_file = get_config_and_set_logger(arguments.config, exit_on_error=False,
+                                                 default_config=default_config,
+                                                 force_debug=arguments.debug)
+    if arguments.proxy:
+        config['proxy'] = arguments.proxy
+    if arguments.ignore_certificate:
+        config['ignore_certificate'] = True
 
-    try:
+    if arguments.load:
+        use_platform_host = False
+        f = open(arguments.load, 'rt')
+        try:
+            json_str = f.read()
+            sys_info = json.loads(json_str)
+        finally:
+            f.close()
+
+    else:
+        use_platform_host = True
         sys_info = get_host_info()
-    except Exception as e:
-        logging.critical(f"Can`t get system info: {e}")
+        if arguments.save:
+            f = open(arguments.save, 'wt')
+            try:
+                f.write(json.dumps(sys_info))
+            finally:
+                f.close()
+    if not arguments.skip:
+        res = send_info(sys_info, config, use_platform_host)
+        print(res)
+    if arguments.echo:
+        pprint(sys_info)
