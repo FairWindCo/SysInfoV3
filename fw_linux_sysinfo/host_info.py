@@ -121,8 +121,14 @@ def get_host_info():
     if result:
         for line in info.split(b'\n'):
             data = line.strip().decode()
-            if data and not data.startswith('lib') and data.find('-dev') == -1:
-                sys_info['soft'].append(data)
+            if (data and not data.startswith('lib')
+                    and not data.startswith('python3-')
+                    and data.find('-dev') == -1):
+                soft_info = data.split(' ')
+                if soft_info:
+                    sys_info['soft'].append({
+                        'name': soft_info[0].strip('/')[0]
+                    })
 
     else:
         logging.warning('GET SERVICE ERROR:' + err)
