@@ -137,7 +137,7 @@ def get_host_info():
                     sys_info['soft'].append({
                         'version': version[:build_index] if build_index > 0 else version,
                         'name': soft_info[0].split('/')[0],
-
+                        'installed': sys_info['LastUpdateCheck'],
                     })
 
     else:
