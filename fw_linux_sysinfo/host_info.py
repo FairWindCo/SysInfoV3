@@ -68,8 +68,8 @@ def get_host_info():
                 if element['id'] == 'cpu':
                     sys_info['cpu_info'].append({
                         'model': element['product'],
-                        'NumberOfCores': element['cores'],
-                        'ThreadCount': element['threads'],
+                        'NumberOfCores': element['configuration']['cores'],
+                        'ThreadCount': element['configuration']['threads'],
                     })
                     sys_info['SystemFamily']=''
                 elif element['id'] == 'memory':
