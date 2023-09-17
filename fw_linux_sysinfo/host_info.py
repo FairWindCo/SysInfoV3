@@ -26,7 +26,7 @@ def get_host_info():
     }
     if result:
         system_info = {}
-        lines = info.split('\n')
+        lines = info.split(b'\n')
         print(lines)
 
 
