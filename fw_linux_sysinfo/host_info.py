@@ -63,7 +63,7 @@ def get_host_info():
     result, _, info, err = execute_os_command('lshw -json', in_sudo=True)
     if result:
         try:
-            sysinfo = json.load(info)
+            sysinfo = json.loads(info)
             print(sysinfo)
         except Exception as e:
             logging.error("LOAD SYS INFO ERROR:" + e)
