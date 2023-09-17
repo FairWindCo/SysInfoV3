@@ -37,7 +37,7 @@ if __name__ == "__main__":
         start_time = datetime.datetime.now()
         if backup.clone_db(db, source):
             db_cloned += 1
-            delta = str(start_time - datetime.datetime.now()).split('.', 2)[0]
+            delta = str(datetime.datetime.now() - start_time).split('.', 2)[0]
             messages.append(f'DB {db}:{source} -cloned, operation time: {delta}')
         else:
             delta = str(datetime.datetime.now() - start_time).split('.', 2)[0]
