@@ -111,7 +111,7 @@ def get_host_info():
         for line in info.split(b'\n'):
             data = line.strip()
             print(data[2])
-            if data and data[2] == b'+':
+            if data and data[2] == 45:
 
                 sys_info['services'].append(data[5:].strip().decode())
 
