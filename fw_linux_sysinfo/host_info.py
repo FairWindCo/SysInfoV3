@@ -127,8 +127,9 @@ def get_host_info():
                 soft_info = data.split(' ')
                 if soft_info:
                     sys_info['soft'].append({
-                        'name': soft_info[0].strip('/')[0],
-                        'version': soft_info[1]
+                        'version': soft_info[1],
+                        #'name': soft_info[0].strip('/')[0],
+
                     })
 
     else:
