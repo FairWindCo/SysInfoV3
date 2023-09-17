@@ -3,6 +3,14 @@ import platform
 from fw_utils.utils import execute_os_command
 
 
+def extract_host_info(bytes_str: bytes):
+    pos_delimenter = bytes_str.find(b':')
+    if pos_delimenter:
+        return bytes_str[pos_delimenter:].strip().decode()
+    else:
+        return ''
+
+
 def get_host_info():
     command = f'hostnamectl'
     result, _, info, err = execute_os_command(command, in_sudo=True)
@@ -25,9 +33,18 @@ def get_host_info():
 
     }
     if result:
-        system_info = {}
         lines = info.split(b'\n')
+        if len(lines) > 9:
+            sys_info['Manufacturer'] = extract_host_info(lines[8])
+            sys_info['OSArchitecture'] = extract_host_info(lines[7])
+            sys_info['Model'] = extract_host_info(lines[9])
+            version = extract_host_info(lines[6])
+            sys_info['BuildNumber'] = version[6:] if version.startswith('Linux') else version
+            sys_info['Version'] = extract_host_info(lines[5])
+
         print(lines)
+    print(sys_info)
+    return sys_info
 
 
 if __name__ == "__main__":
