@@ -6,7 +6,7 @@ from fw_utils.utils import execute_os_command
 def extract_host_info(bytes_str: bytes):
     pos_delimenter = bytes_str.find(b':')
     if pos_delimenter:
-        return bytes_str[pos_delimenter:].strip().decode()
+        return bytes_str[pos_delimenter + 1:].strip().decode()
     else:
         return ''
 
