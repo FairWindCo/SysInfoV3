@@ -26,7 +26,7 @@ if __name__ == "__main__":
         'send_report_web': True,
         'send_report_code': 37,
         "from_mail": "Department_BSP@erc.ua",
-        "to_mail": "Department_BSP@erc.ua",
+        "to_mail": "BSPD_reports@erc.ua",
         "proxy": "http://fw01.bs.local.erc:8080/",
         'log_file': '/home/admin_root/backup.log',
         "server": "WEBLOCAL0201.local.erc",
@@ -40,15 +40,16 @@ if __name__ == "__main__":
     stage = Stage()
     mount_protocol(backup_config, process_backup, stage)
     stage.end_work(True)
+    mes = '<BR>'.join(stage.messages)
     if not stage.finish_success:
-        msg = f"BACKUP POSTGRESQL ERROR! time: {stage.work_time}"
+        msg = f"BACKUP POSTGRESQL ERROR! time: {stage.work_time}<BR>{mes}"
         report_to_server(msg, backup_config, True)
         send_mail_mime(msg, backup_config, is_error=True, files=[log_file])
     else:
         if stage.warning:
-            msg = f"BACKUP POSTGRESQL WITH WARNINGS! time: {stage.work_time}"
+            msg = f"BACKUP POSTGRESQL WITH WARNINGS! time: {stage.work_time}<BR>{mes}"
         else:
-            msg = f"BACKUP POSTGRESQL SUCCESS! time: {stage.work_time}"
+            msg = f"BACKUP POSTGRESQL SUCCESS! time: {stage.work_time}<BR>{mes}"
         report_to_server(msg, backup_config, False)
         if backup_config.get('send_success_mail', False) or stage.warning:
             send_mail_mime(msg, backup_config, is_error=False, files=[log_file])

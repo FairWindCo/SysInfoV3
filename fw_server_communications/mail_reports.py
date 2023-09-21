@@ -16,7 +16,7 @@ def send_mail(message, config):
     FROM_MAIL = config.get('from_mail', '').strip().lower()
     USER_MAIL = config.get('mail_user', '')
     PASS_MAIL = config.get('mail_pass', '')
-    TO_MAIL = config.get('to_mail', "bspd@erc.ua").strip().lower()
+    TO_MAIL = config.get('to_mail', "BSPD_reports@erc.ua").strip().lower()
     try:
         start_smtp_session = time.monotonic_ns()
         smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
@@ -55,7 +55,7 @@ def format_message(message_text: str, config: dict, error: bool = False, files=N
         <html>
           <body>
             <p>
-                <b>ON SERVER {} IN SCRIPT {} GOT ERROR:</b>
+                <b style="color:red">ON SERVER {} IN SCRIPT {} GOT ERROR:</b>
             </p>
             <p>
             {}
@@ -69,7 +69,7 @@ def format_message(message_text: str, config: dict, error: bool = False, files=N
                 <html>
                   <body>
                     <p>
-                        <b style="color:red">SERVER {} IN SCRIPT {} INFO:</b>
+                        <b style="color:green">SERVER {} IN SCRIPT {} INFO:</b>
                     </p>
                     <p>
                     {}

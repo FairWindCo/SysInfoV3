@@ -42,14 +42,14 @@ if __name__ == "__main__":
         else:
             delta = str(datetime.datetime.now() - start_time).split('.', 2)[0]
             messages.append(f'CLONE ERROR ON DB {db} from {source} operation time: {delta}')
-    message = '\n'.join(messages)
+    message = '<BR>\n'.join(messages)
     if db_cloned == 0:
         report_to_server(message, backup_config, True)
         send_mail_mime(message, backup_config, is_error=True, files=[log_file])
     elif len(clone_list) > db_cloned:
-        report_to_server('\n'.join(messages), backup_config, True)
+        report_to_server('<BR>\n'.join(messages), backup_config, True)
         send_mail_mime(message, backup_config, is_error=True, files=[log_file])
     else:
-        report_to_server('\n'.join(messages), backup_config, False)
+        report_to_server('<BR>\n'.join(messages), backup_config, False)
         if backup_config.get('send_success_mail', False):
             send_mail_mime(message, backup_config, is_error=False)

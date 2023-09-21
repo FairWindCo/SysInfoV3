@@ -8,9 +8,13 @@ class Stage:
         self.warning = False
         self.finish_success = None
         self.work_time = None
+        self.messages = []
 
     def set_warning(self):
         self.warning = True
+
+    def add_message(self, mes):
+        self.messages.append(mes)
 
     def set_error(self):
         self.finish_success = False

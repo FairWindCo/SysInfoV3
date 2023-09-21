@@ -118,6 +118,9 @@ def process_backup(config: dict, stage):
     for db in config.get('backup_db', []):
         res = backup.create_date_backup(db)
         result &= res
+        if res:
+            size, _ = backup.backup_info(db)
+            stage.add_message(f'DB backup size: {size}')
         for dest_dir in destination_dirs:
             if res:
                 result &= backup.copy_backup_to_dest(db, dest_dir)
