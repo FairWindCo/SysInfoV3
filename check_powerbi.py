@@ -48,9 +48,3 @@ def test_config(file_name="auth.json"):
 
 if __name__ == "__main__":
     test_config()
-    # test('BS\MSY', 'Q!s2c3f4T%y6u7', 2, proxy={
-    #     "http": "http://fw01.bs.local.erc:8080/",
-    #     "https": "http://fw01.bs.local.erc:8080/",
-    #     "no_proxy": "pbirs0001.local.erc"
-    #
-    # })
