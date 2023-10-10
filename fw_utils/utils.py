@@ -3,6 +3,12 @@ import os
 import shutil
 from subprocess import Popen, PIPE, TimeoutExpired, SubprocessError
 
+def sizeof_fmt(num, suffix="B"):
+    for unit in ("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"):
+        if abs(num) < 1024.0:
+            return f"{num:3.1f}{unit}{suffix}"
+        num /= 1024.0
+    return f"{num:.1f}Yi{suffix}"
 
 def append_data_to_config(config_dict: dict, key: str = 'error_list', value: str = None):
     list_values = config_dict.get(key, [])

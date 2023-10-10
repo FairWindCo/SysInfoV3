@@ -39,13 +39,55 @@ class PostgresqlCommand:
         else:
             return False
 
-    def clone_db(self, db_name: str, source_host: str, dest_db_name: str = None) -> bool:
-        dest_db_name = dest_db_name if dest_db_name else db_name
+    def create_db(self, db_name: str, collacation: str = 'uk_UA.UTF-8',
+                  owner=None, time_zone="Europe/Kiev"):
+        db_owner = db_name if owner is None else owner
+        command = ['/usr/bin/psql', '-c',
+                   f'CREATE DATABASE {db_name} WITH OWNER = {db_owner} LOCALE = "{collacation}" TEMPLATE=template0']
+        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
+                                               as_user=self.command_user, in_shell=False, working_dir=None)
+        if not result:
+            logging.error(f"CREATE DB ERROR: {err}")
+            return result
+        if time_zone:
+            return self.config_timezone(db_name, time_zone)
+        return result
 
+    def config_timezone(self, db_name: str, time_zone="Europe/Kiev"):
+        command = ['/usr/bin/psql', f'--dbname={db_name}', '-c',
+                   f'SET TIME ZONE "{time_zone}"']
+        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
+                                               as_user=self.command_user, in_shell=False, working_dir=None)
+        if not result:
+            logging.error(f"CONFIG DB ERROR: {err}")
+        return result
+
+    def drop_db(self, db_name: str):
+        command = ['/usr/bin/psql', '-c',
+                   f'DROP DB "{db_name}"']
+        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
+                                               as_user=self.command_user, in_shell=False, working_dir=None)
+        if not result:
+            logging.error(f"CONFIG DB ERROR: {err}")
+        return result
+
+    def re_create_db(self, db_name: str, collacation: str = 'uk_UA.UTF-8',
+                     owner=None, time_zone="Europe/Kiev"):
+        if self.drop_db(db_name):
+            return self.create_db(db_name, collacation, owner, time_zone)
+        return False
+
+    def clone_db(self, db_name: str, source_host: str, dest_db_name: str = None, re_create_db=True) -> bool:
+        dest_db_name = dest_db_name if dest_db_name else db_name
         host_src = f'--host={source_host}' if source_host else ''
         host_dsr = f'--host={self.connection_host}' if self.connection_host else ''
 
-        command = f'/usr/bin/pg_dump --dbname={db_name} {host_src} -F c | /usr/bin/pg_restore {host_dsr} -d {dest_db_name} -c'
+        if re_create_db:
+            self.re_create_db(dest_db_name)
+            command = f'/usr/bin/pg_dump --dbname={db_name} {host_src} -F c | /usr/bin/pg_restore {host_dsr} -d {dest_db_name}'
+        else:
+            command = f'/usr/bin/pg_dump --dbname={db_name} {host_src} -F c | /usr/bin/pg_restore {host_dsr} -d {dest_db_name} -c'
+
         result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
                                                as_user=self.command_user, in_shell=False, working_dir=None)
         if not result:

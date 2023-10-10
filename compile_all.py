@@ -10,6 +10,7 @@ if __name__ == "__main__":
     list_compile = [
         # 'send_message.py',
         # 'send_mail.py',
+        'check_powerbi.py',
         'system_info.py',
         # 'clear_profile.py',
         # 'zabbix_agent_uninstaller.py',
