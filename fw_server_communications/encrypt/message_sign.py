@@ -26,8 +26,11 @@ def load_key(key_path):
         sys.exit(-2)
 
 
-def extract_host_name():
-    host, _ = extract_host_domain_name()
+def extract_host_name(config=None):
+    if config is None or config.get('dns_short_name', True):
+        host, _ = extract_host_domain_name()
+    else:
+        host = platform.node()
     return host
 
 

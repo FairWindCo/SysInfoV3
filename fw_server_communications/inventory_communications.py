@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import platform
 
-from fw_server_communications.encrypt.message_sign import encrypt_info_dict
+from fw_server_communications.encrypt.message_sign import encrypt_info_dict, extract_host_name
 from fw_server_communications.mail_reports import send_mail_ex
 from fw_server_communications.server_requests import ServerRequestor, ResponseStateRequest
 
@@ -65,7 +65,7 @@ def report_to_server(message, config, state_error=False, ):
             'message': message,
             'time': ctime(),
             'is_error': state_error,
-            'host': platform.node(),
+            'host': extract_host_name(config),
         }
         if TASK_CODE:
             mes['task_code'] = TASK_CODE
