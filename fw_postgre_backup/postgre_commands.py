@@ -44,7 +44,7 @@ class PostgresqlCommand:
         db_owner = db_name if owner is None else owner
         command = ['/usr/bin/psql', '-c',
                    f'CREATE DATABASE {db_name} WITH OWNER = {db_owner} LOCALE = "{collacation}" TEMPLATE=template0']
-        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
+        result, _, _, err = execute_os_command(*command, in_sudo=True, has_pipe=True,
                                                as_user=self.command_user, in_shell=False, working_dir=None)
         if not result:
             logging.error(f"CREATE DB ERROR: {err}")
@@ -56,7 +56,7 @@ class PostgresqlCommand:
     def config_timezone(self, db_name: str, time_zone="Europe/Kiev"):
         command = ['/usr/bin/psql', f'--dbname={db_name}', '-c',
                    f'SET TIME ZONE "{time_zone}"']
-        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
+        result, _, _, err = execute_os_command(*command, in_sudo=True, has_pipe=True,
                                                as_user=self.command_user, in_shell=False, working_dir=None)
         if not result:
             logging.error(f"CONFIG DB ERROR: {err}")
@@ -65,7 +65,7 @@ class PostgresqlCommand:
     def drop_db(self, db_name: str):
         command = ['/usr/bin/psql', '-c',
                    f'DROP DB "{db_name}"']
-        result, _, _, err = execute_os_command(command, in_sudo=True, has_pipe=True,
+        result, _, _, err = execute_os_command(*command, in_sudo=True, has_pipe=True,
                                                as_user=self.command_user, in_shell=False, working_dir=None)
         if not result:
             logging.error(f"CONFIG DB ERROR: {err}")
