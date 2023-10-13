@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from fw_automations_utils.logger_functionality import get_config_and_set_logger
 from fw_postgre_backup.postgre_commands import PostgresqlCommand
@@ -38,7 +39,9 @@ if __name__ == "__main__":
         if backup.clone_db(db, source):
             db_cloned += 1
             delta = str(datetime.datetime.now() - start_time).split('.', 2)[0]
-            messages.append(f'DB {db}:{source} -cloned, operation time: {delta}')
+            message = f'DB {db}:{source} -cloned, operation time: {delta}'
+            messages.append(message)
+            logging.debug(message)
         else:
             delta = str(datetime.datetime.now() - start_time).split('.', 2)[0]
             messages.append(f'CLONE ERROR ON DB {db} from {source} operation time: {delta}')

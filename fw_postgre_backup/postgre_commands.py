@@ -4,7 +4,7 @@ import os.path
 import shutil
 
 from fw_utils.clear_old_file import clear_old_backup
-from fw_utils.utils import execute_os_command, check_folder
+from fw_utils.utils import execute_os_command, check_folder, sizeof_fmt
 
 
 class PostgresqlCommand:
@@ -162,7 +162,7 @@ def process_backup(config: dict, stage):
         result &= res
         if res:
             size, _ = backup.backup_info(db)
-            stage.add_message(f'DB backup size: {size}')
+            stage.add_message(f'DB {db} backup size: {sizeof_fmt(size)}')
         for dest_dir in destination_dirs:
             if res:
                 result &= backup.copy_backup_to_dest(db, dest_dir)
