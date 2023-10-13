@@ -43,7 +43,7 @@ class PostgresqlCommand:
                   owner=None, time_zone="Europe/Kiev"):
         db_owner = db_name if owner is None else owner
         command = ['/usr/bin/psql',
-                   f'--command="CREATE DATABASE \\"{db_name}\\" WITH OWNER = {db_owner} LOCALE = \\"{collacation}\\" TEMPLATE=template0']
+                   f'--command="CREATE DATABASE \\"{db_name}\\" WITH OWNER = {db_owner} LOCALE = \\"{collacation}\\" TEMPLATE=template0"']
         result, _, _, err = execute_os_command(*command, in_sudo=True, has_pipe=True,
                                                as_user=self.command_user, in_shell=False, working_dir=None)
         if not result:
@@ -68,7 +68,10 @@ class PostgresqlCommand:
         result, _, _, err = execute_os_command(*command, in_sudo=True, has_pipe=True,
                                                as_user=self.command_user, in_shell=False, working_dir=None)
         if not result:
-            logging.error(f"CONFIG DB ERROR: {err}")
+            if err.find(b'does not exist\n') > 0:
+                logging.warning(f"DATABASE: {db_name} - does not exist!")
+                return True
+            logging.error(f"DROP DB ERROR: {err}")
         return result
 
     def re_create_db(self, db_name: str, collacation: str = 'uk_UA.UTF-8',
