@@ -1,5 +1,6 @@
+# pyinstaller --noconfirm --onefile --console --hidden-import "requests-credssp" --hidden-import "requests-ntlm" --hidden-import "requests-kerberos" --hidden-import "winkerberos"  --add-data "C:/Program Files/MIT/Kerberos/bin;bin/" "C:/Users/User/PycharmProjects/SysInfoV3/multi_dns_record.py"
+
 import argparse
-import base64
 import fnmatch
 import logging
 import platform
@@ -12,21 +13,33 @@ from windowsdnsserver.dns.dnsserver import DnsServerModule
 from windowsdnsserver.dns.record import RecordType
 from winrm.protocol import Protocol
 
-from fw_automations_utils.clear_temp_folder import cleanup_mei, cleanup_mei_threading
+from fw_automations_utils.clear_temp_folder import cleanup_mei_threading
 from fw_automations_utils.logger_functionality import setup_logger
-# pyinstaller --noconfirm --onefile --console --add-data "C:/Program Files/MIT/Kerberos/bin;bin/"  "C:/Users/User/PycharmProjects/SysInfoV3/multi_dns_record.py"
+
+
+# pyinstaller --noconfirm --onefile --console --add-data "C:/Program Files/MIT/Kerberos/bin;bin/" --hidden-import "winkerberos" "C:/Users/User/PycharmProjects/SysInfoV3/multi_dns_record.py"
 # pip uninstall windowsdnsserver_py
 # pip install git+https://github.com/FairWindCo/windowsdnsserver-py
 class RemotePowerShellRunner(PowerShellRunner):
 
-    def __init__(self, host: str, use_http: bool = False, power_shell_path: str = None, logger_service=None):
+    def __init__(self, host: str, use_http: bool = False, power_shell_path: str = None, logger_service=None,
+                 method=None, user=None, password=None):
         super().__init__(power_shell_path, logger_service)
 
         self.endpoint = f'http://{host}:5985/wsman' if use_http else f'https://{host}:5986/wsman'
-        p = Protocol(
-            endpoint=self.endpoint,
-            transport='kerberos',
-            server_cert_validation='ignore')
+        args = {
+            'endpoint': self.endpoint,
+            'transport': 'kerberos',
+            # 'transport':'credssp',
+
+            'server_cert_validation': 'ignore'
+        }
+        if method:
+            args['transport'] = method
+        if user:
+            args['username'] = user
+            args['password'] = '' if password is None else password
+        p = Protocol(**args)
         self.logger.debug(f'endpoint: {self.endpoint}')
         self.protocol = p
         self.session_id = None
@@ -102,6 +115,10 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--count_number', action='store', default=8, type=int)
     parser.add_argument('--step_number', action='store', default=1, type=int)
     parser.add_argument('-d', '--debug', action='store', default='info')
+    parser.add_argument('--user', action='store', default=None)
+    parser.add_argument('--password', action='store', default=None)
+    parser.add_argument('--method', action='store', default='kerberos', choices=['kerberos', 'credssp', 'ntlm'])
+
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument('--create', action='store_true')
     action.add_argument('--create_from_file', action='store')
@@ -118,7 +135,11 @@ if __name__ == "__main__":
     if arguments.remote:
         dns_service_arguments['runner'] = RemotePowerShellRunner(host=arguments.remote,
                                                                  use_http=arguments.remote_http,
-                                                                 logger_service=dns_service_arguments['logger_service'])
+                                                                 logger_service=dns_service_arguments['logger_service'],
+                                                                 method=arguments.method,
+                                                                 user=arguments.user,
+                                                                 password=arguments.password
+                                                                 )
     dns_server = DnsServerModule(**dns_service_arguments)
     if not dns_server.is_dns_server_module_installed():
         sys.exit(-1)
@@ -139,6 +160,7 @@ if __name__ == "__main__":
             else:
                 logging.info(f'create new alias: {new_name} for {target} in zone: {zone}')
     elif arguments.create_from_file:
+        target = arguments.target
         with open(arguments.create_from_file, 'rt') as f:
             for line in f.readlines():
                 line = re.sub('[\n\r]', '', line)
@@ -174,3 +196,5 @@ if __name__ == "__main__":
         else:
             logging.error("NO REMOTE SHELL")
     th.join()
+#RUN AS admin
+#multi_dns_record.exe --create_from_file dev01_aliases_221123.txt

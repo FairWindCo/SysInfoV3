@@ -68,12 +68,18 @@ def mount_protocol(config: dict, execute_procedure, stage, stop_if_error: bool =
                 else:
                     logging.error("MOUNT ERROR")
                     if stop_if_error:
+                        stage.add_message(f"MOUNT ERROR: {device} {mount_point}")
                         stage.set_error()
                         return
                     else:
                         stage.set_warning()
             else:
                 destination_dirs.append(mounter.mount_point)
+    if not destination_dirs:
+        logging.error("MOUNT ERROR")
+        stage.add_message("NO FOLDERS MOUNT")
+        stage.set_error()
+        return
     config['destination_dirs'] = destination_dirs
     execute_procedure(config, stage)
     for mounter in mounter_controls:

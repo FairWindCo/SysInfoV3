@@ -158,7 +158,12 @@ def process_backup(config: dict, stage):
     if use_tmp:
         directory_to_backup = config.get('tmp_dir', None)
     else:
-        directory_to_backup = destination_dirs.pop()
+        if destination_dirs:
+            directory_to_backup = destination_dirs.pop()
+        else:
+            stage.set_error()
+            stage.add_message("NO DESTINATION FOLDERS")
+            return False
     backup = PostgresqlCommand(backup_dir=directory_to_backup)
     for db in config.get('backup_db', []):
         res = backup.create_date_backup(db)
