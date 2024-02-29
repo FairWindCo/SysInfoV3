@@ -197,4 +197,6 @@ if __name__ == "__main__":
             logging.error("NO REMOTE SHELL")
     th.join()
 #RUN AS admin
-#multi_dns_record.exe --create_from_file dev01_aliases_221123.txt
+#multi_dns_record.exe --create_from_file .\dev01_aliases_221123.txt
+# .\multi_dns_record.exe --create_from_file .\dev01_alias_230224.txt
+#.\multi_dns_record.exe --create_from_file .\web01_alias_230224.txt --target web01.local.erc

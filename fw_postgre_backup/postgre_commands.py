@@ -64,7 +64,7 @@ class PostgresqlCommand:
 
     def drop_db(self, db_name: str):
         command = ['/usr/bin/psql',
-                   f'--command="DROP DATABASE \\"{db_name}\\""']
+                   f'--command="DROP DATABASE \\"{db_name}\\" WITH (FORCE)"']
         result, _, _, err = execute_os_command(*command, in_sudo=True, has_pipe=True,
                                                as_user=self.command_user, in_shell=False, working_dir=None)
         if not result:

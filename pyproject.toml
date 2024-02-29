@@ -1,0 +1,10 @@
+[project]
+name = "system-info-utils"
+version = "2024.1.1"
+requires-python = ">= 3.8"
+dependencies = [
+    "pywinrm>=0.4.3",
+    "requests>=2.31.0",
+    "requests-kerberos>=0.14.0",
+    "requests-ntlm>=1.2.0"
+]

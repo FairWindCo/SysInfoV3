@@ -11,7 +11,7 @@ from fw_server_communications.server_requests import ServerRequestor, ResponseSt
 def send_info(info, config=None, use_platform_host=True,
               url_default='http://127.0.0.1:8000/host_info_update'):
     result = send_info_request(info, config, use_platform_host, url_default)
-    if result['status'] != ResponseStateRequest.OK:
+    if result is not None and result['status'] != ResponseStateRequest.OK:
         logging.debug('Communication Error while request')
         return False
     else:

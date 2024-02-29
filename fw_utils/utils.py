@@ -3,12 +3,26 @@ import os
 import shutil
 from subprocess import Popen, PIPE, TimeoutExpired, SubprocessError
 
+
 def sizeof_fmt(num, suffix="B"):
     for unit in ("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"):
         if abs(num) < 1024.0:
             return f"{num:3.1f}{unit}{suffix}"
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
+
+
+def sizefmt(num, suffix="B", point_size=2, separtor_size=1, large_size=3):
+    separtor = " " * separtor_size
+    for unit in ("", "K", "M", "G", "T", "P", "E", "Z"):
+        if abs(num) < 1024.0:
+            # return f"{num:3.1f}{unit}{suffix}"
+            formater = "{:" + str(large_size) + "." + str(point_size) + "f}{}{}{}"
+            return formater.format(num, separtor, unit, suffix)
+        num /= 1024.0
+
+    return "{:" + str(large_size) + "." + str(point_size) + "f}{}{}".format(num, separtor, suffix)
+
 
 def append_data_to_config(config_dict: dict, key: str = 'error_list', value: str = None):
     list_values = config_dict.get(key, [])
@@ -72,10 +86,10 @@ def execute_os_command(*commands: str, in_sudo: bool = True, has_pipe: bool = Fa
         if like_login_sudo:
             command_for_execute.append('-i')
     if has_pipe:
-        #command_for_execute.append('--')
+        # command_for_execute.append('--')
         command_for_execute.append('/usr/bin/sh')
         command_for_execute.append('-c')
-        #command_for_execute.append(f"\'{' '.join(commands)}\'")
+        # command_for_execute.append(f"\'{' '.join(commands)}\'")
         command_for_execute.append(' '.join(commands))
     else:
         command_for_execute.extend(commands)
