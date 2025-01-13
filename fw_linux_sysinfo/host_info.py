@@ -81,6 +81,13 @@ def get_host_info():
     if result:
         try:
             sysinfo = json.loads(info)
+            if 'Model' in sysinfo:
+                sys_info['IsVirtualMachine'] = sys_info['Model'] == 'Virtual Machine'
+            elif "configuration" in sysinfo and "family" in sysinfo["configuration"]:
+                sys_info['IsVirtualMachine'] = sys_info['family'] == 'Virtual Machine'
+            else:
+                sys_info['IsVirtualMachine'] = sysinfo["children"][0]["product"] == 'Virtual Machine'
+
             for element in sysinfo["children"][0]['children']:
                 sys_info['SystemFamily'] = " ".join([sysinfo["children"][0]["vendor"],
                                                      sysinfo["children"][0]["product"],
@@ -94,7 +101,6 @@ def get_host_info():
                 elif element['id'] == 'memory':
                     sys_info['TotalPhysicalMemory'] = element['size']
                     sys_info['CurrentTotalPhysicalMemory'] = sys_info['TotalPhysicalMemory']
-                    sys_info['IsVirtualMachine'] = sys_info['Model'] == 'Virtual Machine'
                 elif element['class'] == 'storage':
                     for disk in element['children']:
                         if 'size' in disk:
