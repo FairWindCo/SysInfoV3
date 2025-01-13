@@ -8,7 +8,7 @@ def compile_file(file_path):
 
 if __name__ == "__main__":
     list_compile = [
-        # 'send_message.py',
+        'send_message.py',
         # 'send_mail.py',
         'check_port_connect.py',
         'check_powerbi.py',

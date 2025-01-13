@@ -103,7 +103,7 @@ def execute_os_command(*commands: str, in_sudo: bool = True, has_pipe: bool = Fa
         output_stream, err_stream = subp.communicate(timeout=timeout)
         if subp.returncode != 0:
             logging.warning(f"RETURN CODE NON ZERO: {subp.returncode} {err_stream.decode()}")
-        return subp.returncode == 0, subp.returncode, output_stream, err_stream
+        return subp.returncode == 0, subp.returncode, output_stream, err_stream.decode()
     except TimeoutExpired:
         logging.warning("Timeout")
     except SubprocessError as e:

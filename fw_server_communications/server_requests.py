@@ -167,7 +167,10 @@ class ServerRequestor:
         selected_proxy = self.config.get('selected_proxy', None)
         round_robin_proxy = self.config.get('round_robin_proxy', None)
         auto_select_proxy = self.config.get('auto_select_proxy', True)
-        if round_robin_proxy is None or selected_proxy:
+        if not auto_select_proxy or (round_robin_proxy is None or selected_proxy):
+            self.config['proxy'] = selected_proxy
+            self.config['http_proxy'] = selected_proxy
+            self.config['https_proxy'] = selected_proxy
             _, response, status = self.communicate_with_server(self.session, url, message, self.config)
             return {
                 'response': response,

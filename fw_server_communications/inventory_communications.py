@@ -71,7 +71,8 @@ def report_to_server(message, config, state_error=False, ):
             mes['task_code'] = TASK_CODE
         try:
             logging.info(message)
-            return send_info_request(mes, config, use_platform_host=True,
+            platform_host = not (config and 'host' in config)
+            return send_info_request(mes, config, use_platform_host=platform_host,
                                      url_default='http://127.0.0.1:8000/special')
         except Exception:
             logging.critical("EXCEPTION", exc_info=True)

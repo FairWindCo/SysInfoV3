@@ -12,8 +12,9 @@ if __name__ == "__main__":
         'kerberos_key_file': '/etc/krb5.keytab',
         'backup_db': ['medoc03'],
         'mount_points': {
-            '//bkp0201.bs.local.erc/postgresql': '/mnt/bkp0201',
-            '//bkp0101.bs.local.erc/postgresql': '/mnt/bkp0101',
+#            '//bkp0201.bs.local.erc/postgresql': '/mnt/bkp0201',
+#            '//bkp0101.bs.local.erc/postgresql': '/mnt/bkp0101',
+            '//bs.local.erc/bkp/BackupDB/MEDOC/postgresql': '/mnt/bkp0101',
         },
         # 'destination_dirs': ['/mnt/bkp0201', '/mnt/bkp0101']
         'tmp_dir': '/tmp',

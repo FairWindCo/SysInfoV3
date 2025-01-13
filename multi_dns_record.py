@@ -200,3 +200,5 @@ if __name__ == "__main__":
 #multi_dns_record.exe --create_from_file .\dev01_aliases_221123.txt
 # .\multi_dns_record.exe --create_from_file .\dev01_alias_230224.txt
 #.\multi_dns_record.exe --create_from_file .\web01_alias_230224.txt --target web01.local.erc
+# multi_dns_record.exe --search hr09
+# multi_dns_record.exe --like *09

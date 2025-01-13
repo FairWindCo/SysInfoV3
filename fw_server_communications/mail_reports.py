@@ -38,7 +38,7 @@ def send_mail(message, config):
             'error': str(e),
             'error_type': type(e).__name__,
             'mail_send_to_server': f'{SMTP_SERVER}:{SMTP_PORT}',
-            'success': True,
+            'success': False,
         }
 
 

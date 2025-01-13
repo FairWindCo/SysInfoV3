@@ -27,7 +27,9 @@ def load_key(key_path):
 
 
 def extract_host_name(config=None):
-    if config is None or config.get('dns_short_name', True):
+    if config is not None and "host" in config:
+        host, _ = split_host_domain_name(config['host'])
+    elif config is None or config.get('dns_short_name', True):
         host, _ = extract_host_domain_name()
     else:
         host = platform.node()
@@ -36,6 +38,10 @@ def extract_host_name(config=None):
 
 def extract_host_domain_name(default_domain='bs.local.erc'):
     node_name = platform.node()
+    return split_host_domain_name(node_name, default_domain)
+
+
+def split_host_domain_name(node_name, default_domain='bs.local.erc'):
     point_index = node_name.find('.')
     if point_index > 0:
         host_name = node_name[:point_index]

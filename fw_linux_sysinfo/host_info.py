@@ -55,8 +55,9 @@ def get_host_info():
         # 'hdd_count': info['Win32_DiskDrive']['count'],
         # 'cpu_count': info['Win32_Processor']['count'],
         'hdd_info': [],
-        'cpu_info': []
-
+        'cpu_info': [],
+        'InstallDate':extract_create_file_time(),
+        'LastUpdateCheck': extract_modify_file_time(),
     }
     result, _, info, err = execute_os_command('hostnamectl', in_sudo=True)
     if result:
@@ -68,8 +69,8 @@ def get_host_info():
             version = extract_host_info(lines[7])
             sys_info['Version'] = version[6:] if version.startswith('Linux') else version
             sys_info['sysname'] = extract_host_info(lines[6])
-            sys_info['InstallDate'] = extract_create_file_time()
-            sys_info['LastUpdateCheck'] = extract_modify_file_time()
+            #sys_info['InstallDate'] = extract_create_file_time()
+            #sys_info['LastUpdateCheck'] = extract_modify_file_time()
             sys_info['hotfix'] = [
                 ('last', extract_modify_file_time('/var/lib/apt/extended_states')),
             ]
