@@ -11,6 +11,9 @@ from fw_server_communications.inventory_communications import send_info
 from fw_utils.utils import execute_os_command
 
 
+# to build run PYTHONPATH=$PYTHONPATH:/home/inventor/sub/SysInfoV3/; /home/inventor/bin/pyinstaller -F fw_linux_sysinfo/host_info.py
+# to run PYTHONPATH=$PYTHONPATH:/home/inventor/sub/SysInfoV3/; /home/inventor/bin/python3 -m pyinstaller -F fw_linux_sysinfo/host_info.py
+
 def extract_host_info(bytes_str: bytes):
     pos_delimenter = bytes_str.find(b':')
     if pos_delimenter:
@@ -84,7 +87,7 @@ def get_host_info():
             if 'Model' in sysinfo:
                 sys_info['IsVirtualMachine'] = sys_info['Model'] == 'Virtual Machine'
             elif "configuration" in sysinfo and "family" in sysinfo["configuration"]:
-                sys_info['IsVirtualMachine'] = sys_info['family'] == 'Virtual Machine'
+                sys_info['IsVirtualMachine'] = sys_info["configuration"]['family'] == 'Virtual Machine'
             else:
                 sys_info['IsVirtualMachine'] = sysinfo["children"][0]["product"] == 'Virtual Machine'
 
