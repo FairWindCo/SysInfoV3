@@ -66,10 +66,8 @@ def get_host_info():
     result, _, info, err = execute_os_command('hostnamectl', in_sudo=True)
     if result:
         lines = info.split(b'\n')
-        if len(lines) > 10:
-            sys_info['Manufacturer'] = extract_host_info(lines[9])
+        if len(lines) > 8:
             sys_info['OSArchitecture'] = extract_host_info(lines[8])
-            sys_info['Model'] = extract_host_info(lines[10])
             version = extract_host_info(lines[7])
             sys_info['Version'] = version[6:] if version.startswith('Linux') else version
             sys_info['sysname'] = extract_host_info(lines[6])
@@ -78,6 +76,12 @@ def get_host_info():
             sys_info['hotfix'] = [
                 ('last', extract_modify_file_time('/var/lib/apt/extended_states')),
             ]
+            if len(lines) > 10:
+                sys_info['Manufacturer'] = extract_host_info(lines[9])
+                sys_info['Model'] = extract_host_info(lines[10])
+            else:
+                sys_info['Manufacturer'] = extract_host_info(lines[5])
+                sys_info['Model'] = extract_host_info(lines[2])
 
     else:
         logging.warning('GET HOST INFO ERROR:' + err)
