@@ -3,6 +3,7 @@ import datetime
 import json
 import logging
 import os
+import traceback
 from pprint import pprint
 
 from fw_automations_utils.logger_functionality import get_config_and_set_logger
@@ -85,9 +86,9 @@ def get_host_info():
         try:
             sysinfo = json.loads(info)
             if 'Model' in sysinfo:
-                sys_info['IsVirtualMachine'] = sys_info['Model'] == 'Virtual Machine'
+                sys_info['IsVirtualMachine'] = sysinfo['Model'] == 'Virtual Machine'
             elif "configuration" in sysinfo and "family" in sysinfo["configuration"]:
-                sys_info['IsVirtualMachine'] = sys_info["configuration"]['family'] == 'Virtual Machine'
+                sys_info['IsVirtualMachine'] = sysinfo["configuration"]['family'] == 'Virtual Machine'
             else:
                 sys_info['IsVirtualMachine'] = sysinfo["children"][0]["product"] == 'Virtual Machine'
 
@@ -113,6 +114,7 @@ def get_host_info():
                             })
             # print(sysinfo["children"][0])
         except Exception as e:
+            print(traceback.format_exc())
             logging.error("LOAD SYS INFO ERROR:" + str(e))
 
     else:
